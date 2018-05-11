@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/nguyenthanhchungfit/TheGioiDiDong#readme",
   "dependencies": {
+    "config": "^1.30.0",
     "mysql": "^2.15.0",
     "xml-js": "^1.6.2",
     "xml2js": "^0.4.19",
