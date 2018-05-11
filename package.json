@@ -1,0 +1,29 @@
+{
+  "name": "thegioididong",
+  "version": "1.0.0",
+  "description": "Website mobile, laptop, tablet",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyenthanhchungfit/TheGioiDiDong.git"
+  },
+  "keywords": [
+    "TGDD",
+    "nodejs"
+  ],
+  "author": "nguyen thanh chung, nguyen minh dong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nguyenthanhchungfit/TheGioiDiDong/issues"
+  },
+  "homepage": "https://github.com/nguyenthanhchungfit/TheGioiDiDong#readme",
+  "dependencies": {
+    "mysql": "^2.15.0",
+    "xml-js": "^1.6.2",
+    "xml2js": "^0.4.19",
+    "xmldom": "^0.1.27"
+  }
+}
