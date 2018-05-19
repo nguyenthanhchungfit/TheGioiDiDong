@@ -16,7 +16,9 @@ function getConnection(){
     }
     return connection;
 }
-
+/*getConnection.query("SELECT * FROM customers", function (err, result, fields) {
+    console.log(result)
+})*/
 module.exports = {
     getConnection : getConnection
 }
