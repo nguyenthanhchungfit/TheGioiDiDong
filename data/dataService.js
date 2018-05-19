@@ -3,9 +3,8 @@
 var app = require('http');
 var url = require('url');
 var query = require('querystring');
-//const config = require("config");
-
-var port = 8003;
+const config = require("config");
+var port = config.get("server.port");
 
 app.createServer((req, res) => {
     console.log(`${req.method} ${req.url}`);
