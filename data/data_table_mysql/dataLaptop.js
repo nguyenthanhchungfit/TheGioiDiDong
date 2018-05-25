@@ -1,28 +1,18 @@
 const db = require("../dao_mysql/connection_mysql");
+const common_handle_data= require("./core_data_table_mysql//common_handle_data");
 const q = require("q");
 
 var connection = db.getConnection();
 
 function getAllLaptop(){
     var sql = `SELECT * FROM laptop`;
-    var defer = q.defer();
-    var query = connection.query(sql, function(err, result, fields){
-        if(err) defer.reject(err);
-        defer.resolve(result);
-    });
-    return defer.promise;
+    return common_handle_data.getAllInfo(sql);
 }
-function getThongSoKyThuat(laptop)
-{
-    var sql = 'SELECT * FROM thong_so_ky_thuat WHERE ma_thiet_bi=$[laptop[0].ma_thiet_bi]'
-    var defer = q.defer();
-    var query = connection.query(sql, function(err, result, fields){
-        if(err) defer.reject(err);
-        defer.resolve(result);
-    });
-    return defer.promise;
+function updateLaptop(primaryAttribute,editAttribute,primaryVal,editVal){
+    var sql= "UPDATE laptop SET"+editAttribute+ "="+editVal+  "WHERE "+primaryAttribute+" ="+primaryVal;
+    return common_handle_data.updateInfo(sql);
 }
 module.exports = {
   getAllLaptop : getAllLaptop,
-  getThongSoKyThuat : getThongSoKyThuat
+  updateLaptop : updateLaptop
 }

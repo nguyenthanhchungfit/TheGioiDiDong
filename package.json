@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/nguyenthanhchungfit/TheGioiDiDong#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "config": "^1.30.0",
     "mysql": "^2.15.0",
     "q": "^1.5.1",
