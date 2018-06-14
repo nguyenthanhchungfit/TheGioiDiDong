@@ -5,13 +5,18 @@ var duong_dan_module_DL_mysql= './data_table_mysql//';
 //module về dữ liệu mysql
 const config = require("config");
 
-
 //npm module 
 var bodyParser = require('body-parser');
 var app = require('http');
 var url = require('url');
 var query = require('querystring');
 var port = config.get("server.port");
+
+// custom module
+var session_manager_class = require('./server_connection/session_manager');
+var server_accounts_manager = require('./server_connection/server_accounts_manager');
+
+var session_manager = new session_manager_class(10);
 
 const dataLaptop = require(duong_dan_module_DL_mysql+"dataLaptop");
 const dataHinh = require(duong_dan_module_DL_mysql+"dataHinh");
@@ -21,6 +26,9 @@ const dataMobile = require(duong_dan_module_DL_mysql+"dataMobile");
 const dataNhaSX = require(duong_dan_module_DL_mysql+"dataNhaSX");
 const dataTablet = require(duong_dan_module_DL_mysql+"dataTablet");
 const dataThongSoKyThuat = require(duong_dan_module_DL_mysql+"dataThongSoKyThuat");
+
+
+
 //Test
 //Tạo server lắng nghe kết nối
 app.createServer((req, res) => {
@@ -43,6 +51,7 @@ app.createServer((req, res) => {
    console.log(Chuoi_url);
    console.log(req.url);
     //Xử lí dữ liệu theo URL
+    /*
     switch(Chuoi_url){
         case '/getAllLaptop':
         dataLaptop.getAllLaptop().then(function(result){
@@ -143,20 +152,51 @@ app.createServer((req, res) => {
         })
         break;
     }
+    */
+
 
     switch(req.method) {
         //Lấy dữ liệu
         case 'GET':
+        {
             res.writeHeader(200, {'Content-Type': 'text/plain'});
             res.end(data);
             console.log(data);
             console.log('--> Done');
-            break
+        }
+        break;
         //Cập nhập dữ liệu
         case 'POST':
-            res.writeHeader(200, {'Content-Type': 'text/plain'});
-            res.end("Data POST!!");
-            break;
+        {
+            switch(req.url){
+                case '/loginservice':
+                {
+                    var data = '';
+                    req.on('data', function (chunk) {
+                        data += chunk;
+                    });
+                    req.on('end', function () {
+                        var account = query.parse(data);
+                        if(server_accounts_manager.isExistedAccount(account.username, account.password)){
+                            var session = session_manager.insertNewConnection();
+                            console.log(session);
+                            res.writeHeader(200, {'Content-Type': 'text/plain'});
+                            res.end(session);
+                        }else{
+                            res.writeHeader(200, {'Content-Type': 'text/plain'});
+                            res.end("-1");
+                        }
+                    });
+                }
+                break;
+                default:
+                {
+                    res.writeHeader(200, {'Content-Type': 'text/plain'});
+                    res.end("DataService not implement!!");
+                }
+            }
+        }
+        break; 
         case 'PUT':
             break;
         case 'DELETE':

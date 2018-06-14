@@ -23,6 +23,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "config": "^1.30.0",
+    "https": "^1.0.0",
     "mysql": "^2.15.0",
     "q": "^1.5.1",
     "xml-js": "^1.6.2",
