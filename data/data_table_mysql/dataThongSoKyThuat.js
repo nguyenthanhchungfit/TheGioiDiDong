@@ -9,7 +9,7 @@ function getAllThongSoKyThuat(){
    return common_handle_data.getAllInfo(sql);
 }
 function updateThongSoKyThuat(primaryAttribute,editAttribute,primaryVal,editVal){
-    var sql= "UPDATE thong_so_ky_thuat SET"+editAttribute+ "="+editVal+  "WHERE "+primaryAttribute+" ="+primaryVal;
+    var sql= "UPDATE thong_so_ky_thuat SET "+editAttribute+ "='"+editVal+  "' WHERE "+primaryAttribute+" ='"+primaryVal+"'";
     return common_handle_data.updateInfo(sql);
 }
 module.exports = {
