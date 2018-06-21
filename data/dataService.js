@@ -17,6 +17,9 @@ var session_manager_class = require('./server_connection/session_manager');
 var server_accounts_manager = require('./server_connection/server_accounts_manager');
 
 var session_manager = new session_manager_class(10);
+session_manager.loadDataFromFile();
+session_manager.printConnections();
+
 
 const dataLaptop = require(duong_dan_module_DL_mysql+"dataLaptop");
 const dataHinh = require(duong_dan_module_DL_mysql+"dataHinh");
@@ -153,7 +156,6 @@ app.createServer((req, res) => {
         break;
     }
     */
-
 
     switch(req.method) {
         //Lấy dữ liệu
