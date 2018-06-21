@@ -18,7 +18,7 @@ var server_accounts_manager = require('./server_connection/server_accounts_manag
 
 var session_manager = new session_manager_class(10);
 session_manager.loadDataFromFile();
-session_manager.printConnections();
+
 
 
 const dataLaptop = require(duong_dan_module_DL_mysql+"dataLaptop");

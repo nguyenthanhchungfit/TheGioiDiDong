@@ -29,7 +29,6 @@ class SessionsManager{
 
     // Kiểm tra session còn thời hạn không? Nếu không return true, ngược lại false
     isExpiredDate(last_access, a_timeout){
-        console.log(new Date());
         var milis = new Date(last_access).getTime();
         var milisNow = new Date().getTime();
         return (milis + a_timeout) < milisNow;
@@ -59,7 +58,7 @@ class SessionsManager{
             if(this.isExistedKey(key) < 0){
                 var new_session = {"sessionID" : key, "time_out" : this.timeout, "last_access" : new Date()}
                 this.connections.push(new_session);
-                this.writeFileSync();
+                this.saveDataToFile();
                 return key;
             }
         }
@@ -111,7 +110,7 @@ class SessionsManager{
             if(sessionID == session.sessionID){
                 if(!this.isExpiredDate(session.last_access, session.time_out)){
                     session.last_access = new_access_date;
-                    this.writeFileSync();
+                    this.saveDataToFile();
                     return true;
                 }
             }
