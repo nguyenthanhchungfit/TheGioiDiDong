@@ -9,7 +9,7 @@ function getAllTablet(){
    return common_handle_data.getAllTablet(sql);
 }
 function updateTablet(primaryAttribute,editAttribute,primaryVal,editVal){
-  var sql= "UPDATE tablet SET"+editAttribute+ "="+editVal+  "WHERE "+primaryAttribute+" ="+primaryVal;
+  var sql= "UPDATE tablet SET "+editAttribute+ "='"+editVal+  "' WHERE "+primaryAttribute+" ='"+primaryVal+"'";
   return common_handle_data.updateInfo(sql);
 }
 module.exports = {

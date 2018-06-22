@@ -9,7 +9,7 @@ function getAllMobile(){
     return common_handle_data.getAllInfo(sql);
 }
 function updateMobile(primaryAttribute,editAttribute,primaryVal,editVal){
-    var sql= "UPDATE mobile SET"+editAttribute+ "="+editVal+  "WHERE "+primaryAttribute+" ="+primaryVal;
+    var sql= "UPDATE mobile SET "+editAttribute+ "='"+editVal+  "' WHERE "+primaryAttribute+" ='"+primaryVal+"'";
     return common_handle_data.updateInfo(sql);
 }
 module.exports = {

@@ -10,7 +10,8 @@ function getAllAccount(){
 }
 
 function updateAccount(primaryAttribute,editAttribute,primaryVal,editVal){
-    var sql= "UPDATE account SET"+editAttribute+ "="+editVal+  "WHERE "+primaryAttribute+" ="+primaryVal;
+    var sql= "UPDATE account SET "+editAttribute+ "='"+editVal+  "' WHERE "+primaryAttribute+" ='"+primaryVal+"'";
+    console.log(sql);
     return common_handle_data.updateInfo(sql);
 }
 

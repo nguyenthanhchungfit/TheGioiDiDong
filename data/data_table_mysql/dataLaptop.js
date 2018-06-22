@@ -9,7 +9,7 @@ function getAllLaptop(){
     return common_handle_data.getAllInfo(sql);
 }
 function updateLaptop(primaryAttribute,editAttribute,primaryVal,editVal){
-    var sql= "UPDATE laptop SET"+editAttribute+ "="+editVal+  "WHERE "+primaryAttribute+" ="+primaryVal;
+    var sql= "UPDATE laptop SET "+editAttribute+ "='"+editVal+  "' WHERE "+primaryAttribute+" ='"+primaryVal+"'";
     return common_handle_data.updateInfo(sql);
 }
 module.exports = {

@@ -9,7 +9,7 @@ function getAllNhaSanXuat(){
     return common_handle_data.getAllInfo(sql);
 }
 function updateNhaSanXuat(primaryAttribute,editAttribute,primaryVal,editVal){
-    var sql= "UPDATE nha_san_xuat SET"+editAttribute+ "="+editVal+  "WHERE "+primaryAttribute+" ="+primaryVal;
+    var sql= "UPDATE nha_san_xuat SET "+editAttribute+ "='"+editVal+  "' WHERE "+primaryAttribute+" ='"+primaryVal+"'";
     return common_handle_data.updateInfo(sql);
 }
 module.exports = {
