@@ -1,6 +1,8 @@
 var app = require('http');
 var url = require('url');
 var query = require('querystring');
+
+var PhoneService = require('./services/PhoneService');
 var session_manager_class = require('./server_connection/session_manager');
 var server_accounts_manager = require('./server_connection/server_accounts_manager');
 
@@ -8,6 +10,9 @@ var session_manager = new session_manager_class(10);
 var session_connect_bus = -1;
 
 const port = 8002;
+var responseHeader = {'Content-Type': 'application/json', 
+                      'Access-Control-Allow-Origin' : '*', 
+                      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'};
 
 function loginDataServer(res, req){
     var post_data = query.stringify({
@@ -49,8 +54,9 @@ app.createServer((req, res) => {
     console.log(`${urlRequest} - ${methodRequest}`);
     if(methodRequest == "GET"){
         switch(urlRequest){
-            case '/test':
+            case '/getAllMobileForHome':
             {
+                PhoneService.getAllMobileForHome(req, res, responseHeader);
             }
             break;
             default:
@@ -96,7 +102,7 @@ app.createServer((req, res) => {
         console.log('==> Error: ' + err);
     else{
         console.log('Server is starting at port ' + port);
-        loginDataServer();
+        //loginDataServer();
     }
         
 

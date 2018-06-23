@@ -19,7 +19,8 @@ var server_accounts_manager = require('./server_connection/server_accounts_manag
 var session_manager = new session_manager_class(10);
 session_manager.loadDataFromFile();
 
-
+// Services
+var PhoneService = require("./services/PhoneService");
 
 const dataLaptop = require(duong_dan_module_DL_mysql+"dataLaptop");
 const dataHinh = require(duong_dan_module_DL_mysql+"dataHinh");
@@ -30,11 +31,18 @@ const dataNhaSX = require(duong_dan_module_DL_mysql+"dataNhaSX");
 const dataTablet = require(duong_dan_module_DL_mysql+"dataTablet");
 const dataThongSoKyThuat = require(duong_dan_module_DL_mysql+"dataThongSoKyThuat");
 
+var responseHeader = {'Content-Type' : 'application/json','Access-Control-Allow-Origin' : '*', 
+'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'};
 
 
 //Test
 //Tạo server lắng nghe kết nối
 app.createServer((req, res) => {
+
+    var methodRequest = req.method;
+    var urlRequest = req.url;
+    console.log(`${urlRequest} - ${methodRequest}`);
+
    //Tách chuỗi url khi có para
    var Chuoi_url=req.url;
    if(req.url.indexOf('?')>0){
@@ -61,6 +69,10 @@ app.createServer((req, res) => {
                     data=JSON.stringify(result);
                     console.log(data);
                 });
+                break;
+                
+                case '/getAllMobileForHome' :
+                    PhoneService.getAllMobileForHome(req, res, responseHeader);
                 break;
                 case '/getAllTablet':
                 data=dataTablet.getAllTablet().then(function(result){
@@ -98,9 +110,10 @@ app.createServer((req, res) => {
                     console.log(data);
                 })
                 break;
-            res.writeHeader(200, {'Content-Type': 'text/plain'});
-            res.end(data);
-            console.log(data);
+            responseHeader['Content-Type'] = 'application/json';
+            //res.writeHeader(200, responseHeader);
+            //res.end(data);
+            //console.log(data);
             console.log('--> Done');
         }
     }
@@ -143,6 +156,11 @@ app.createServer((req, res) => {
                     });
                 }
                 break;
+
+                case '/getAllMobileForHome' :
+                    PhoneService.getAllMobileForHome(req, res, responseHeader);
+                break;
+
                  // Thứ tự truyền para "primaryAttribute,editAttribute,primaryVal,editVal"
                 case '/updateLaptop':
                 dataLaptop.updateLaptop(primaryAttribute,editAttribute,primaryVal,editVal).then(function(result){
