@@ -56,7 +56,7 @@ app.createServer((req, res) => {
    var Chuoi_Tham_so=req.url.slice(req.url.indexOf('?')+1);
    var Tham_so_json = query.parse(Chuoi_Tham_so);
    console.log(req.url);
-   
+   var data="";
     switch(req.method) {
         //Lấy dữ liệu
         case 'GET':
@@ -87,7 +87,8 @@ app.createServer((req, res) => {
                 case '/getAllAccount':
                 dataAccount.getAllAccount().then(function(result){
                     data=JSON.stringify(result);
-                    console.log(data);
+                    res.writeHeader(200,responseHeader);
+                    res.end(data);
                 })
                 break;
                 case '/getAllHinh':
@@ -212,6 +213,7 @@ app.createServer((req, res) => {
         case 'DELETE':
             break;
     }
+    
 }).listen(port, (err) => {
     if(err != null)
         console.log('==> Error: ' + err);
