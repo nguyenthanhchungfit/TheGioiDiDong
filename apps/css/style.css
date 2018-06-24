@@ -951,6 +951,7 @@ textarea.input {
   top: 0;
 }
 
+
 .product.product-single .product-label>span {
   display: block;
 }
@@ -965,6 +966,7 @@ textarea.input {
 
 .product.product-single .product-body {
   padding: 15px;
+  text-align: center;
 }
 
 .product.product-single .product-price {
@@ -1056,6 +1058,11 @@ textarea.input {
 
 .product.product-widget .cancel-btn:hover {
   color: #30323A;
+}
+
+img.img_thubnail_home{
+  width: 180px;
+  height: 180px;
 }
 
 /*----------------------------*\

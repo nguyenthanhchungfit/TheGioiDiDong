@@ -31,7 +31,13 @@ app.createServer((req, res) =>{
                         '.png' : 'image/png',
                         '.gif' : 'image/gif',
                         '.css' : 'text/css',
-                        '.js' : 'text/javascript'
+                        '.js' : 'text/javascript',
+                        '.otf' : 'font/opentype',
+                        '.eot' : 'font/opentype',
+                        '.svg' : 'font/opentype',
+                        '.ttf' : 'font/opentype',
+                        '.woff' : 'font/opentype',
+                        '.woff2' : 'font/opentype',
                         }[ req.url.substr(file_extension) ];
 
     // Đọc file theo req gửi từ Client lên (lưu ý, phần này sẽ được call nhiều lần để đọc các file Resource)
@@ -63,36 +69,36 @@ app.createServer((req, res) =>{
         console.log('Server is starting at port ' + port);
         // Request key toi busService
 
-        var post_data = querystring.stringify({
-            'username' : 'thanhchung',
-            'password' : 'NTCntc'
-        });
+        // var post_data = querystring.stringify({
+        //     'username' : 'thanhchung',
+        //     'password' : 'NTCntc'
+        // });
 
-        var post_options = {
-            host: 'localhost',
-            port: '8002',
-            path: '/loginservice',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Content-Length': Buffer.byteLength(post_data)
-            }
-        };
-        var post_req = app.request(post_options, function(res) {
-            res.setEncoding('utf8');
-            var data = '';
-            res.on('data', function (chunk) {
-                data += chunk;
-            });
+        // var post_options = {
+        //     host: 'localhost',
+        //     port: '8002',
+        //     path: '/loginservice',
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded',
+        //         'Content-Length': Buffer.byteLength(post_data)
+        //     }
+        // };
+        // var post_req = app.request(post_options, function(res) {
+        //     res.setEncoding('utf8');
+        //     var data = '';
+        //     res.on('data', function (chunk) {
+        //         data += chunk;
+        //     });
 
-            res.on('end', function(){
-                session_connect_bus = data;
-                console.log(session_connect_bus);
-            });
-        });
+        //     res.on('end', function(){
+        //         session_connect_bus = data;
+        //         console.log(session_connect_bus);
+        //     });
+        // });
 
-        post_req.write(post_data);
-        post_req.end();
+        // post_req.write(post_data);
+        // post_req.end();
     }
 
 });
