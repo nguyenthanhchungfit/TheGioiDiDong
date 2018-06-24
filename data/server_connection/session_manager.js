@@ -6,7 +6,7 @@ const length_key = 10;
 
 class SessionsManager{
     
-    constructor(size){
+    constructor(size, path){
         if(!size){
             this.size = 0;
         }else{
@@ -14,13 +14,14 @@ class SessionsManager{
         }
         this.timeout = 1000000;
         this.connections = [];
+        this.path_data = path;
     }
 
     // Nếu tồn tại key trả về index của session
     isExistedKey(key){
         var length = this.connections.length;
-        for(var i =0; i <length; i++){
-            if(key === this.connections[i]){
+        for(var i = 0; i <length; i++){
+            if(key === this.connections[i].sessionID){
                 return i;
             }
         }
@@ -73,20 +74,24 @@ class SessionsManager{
 
     // Lưu các connections hiện tại xuống dưới file
     saveDataToFile(){
-        fs.writeFileSync(const_path_data, JSON.stringify(this.connections), "utf8");
+        fs.writeFileSync(this.path_data, JSON.stringify(this.connections), "utf8");
     }
 
     // Cập nhật các connections từ file
     loadDataFromFile(){
-        var session_data = JSON.parse(fs.readFileSync(const_path_data, 'utf8'));
-        this.connections = [];
-        var length = session_data.length;
-        for(var i = 0; i < length; i++){
-            var session = session_data[i];
-            if(!this.isExpiredDate(session.last_access, session.time_out)){
-                this.connections.push(session);
+        try{
+            var session_data = JSON.parse(fs.readFileSync(this.path_data, 'utf8'));
+            this.connections = [];
+            var length = session_data.length;
+            for(var i = 0; i < length; i++){
+                var session = session_data[i];
+                if(!this.isExpiredDate(session.last_access, session.time_out)){
+                    this.connections.push(session);
+                }
             }
-        }
+        }catch(err){
+            console.log(err);
+        }     
     }
 
     // Set timeout cho session_manager
@@ -124,6 +129,36 @@ class SessionsManager{
         this.connections.splice(index, 1);
         this.writeFileSync();
         return true;
+    }
+
+    // Lấy session tại vị trí index
+    getSesionAt(index){
+        if(index < 0 || index >= this.connections.length) return -1;
+        return this.connections[index];
+    }
+
+
+    // Error Expired Session
+    getExpiredError(){
+        return {"error" : "Your Session is Expired!"};
+    }
+
+    // Error Login Account
+    getLoginError(){
+        return {"error" : "Your Account is not valid!"};
+    }
+
+    getField(field){
+        var value = objData[`${field}`];
+        if(value == undefined){
+            return -1;
+        }
+        return value;
+    }
+    
+    setField(field, value){
+        objData[`${field}`] = value;
+        writeData();
     }
 }
 

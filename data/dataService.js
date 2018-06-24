@@ -14,13 +14,15 @@ var port = config.get("server.port");
 
 // custom module
 var session_manager_class = require('./server_connection/session_manager');
-var server_accounts_manager = require('./server_connection/server_accounts_manager');
-
-var session_manager = new session_manager_class(10);
+const session_server_store_path= __dirname + "/server_connection/session_storage.json";
+const session_amout_manager = 10;
+var session_manager = new session_manager_class(session_amout_manager, session_server_store_path);
 session_manager.loadDataFromFile();
+session_manager.printConnections();
 
 // Services
-var PhoneService = require("./services/PhoneService");
+const PhoneService = require("./services/PhoneService");
+const LoginService = require("./services/LoginService");
 
 const dataLaptop = require(duong_dan_module_DL_mysql+"dataLaptop");
 const dataHinh = require(duong_dan_module_DL_mysql+"dataHinh");
@@ -33,6 +35,8 @@ const dataThongSoKyThuat = require(duong_dan_module_DL_mysql+"dataThongSoKyThuat
 
 var responseHeader = {'Content-Type' : 'application/json','Access-Control-Allow-Origin' : '*', 
 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'};
+
+
 
 
 //Test
@@ -138,22 +142,7 @@ app.createServer((req, res) => {
             switch(req.url){
                 case '/loginservice':
                 {
-                    var data = '';
-                    req.on('data', function (chunk) {
-                        data += chunk;
-                    });
-                    req.on('end', function () {
-                        var account = query.parse(data);
-                        if(server_accounts_manager.isExistedAccount(account.username, account.password)){
-                            var session = session_manager.insertNewConnection();
-                            console.log(session);
-                            res.writeHeader(200, {'Content-Type': 'text/plain'});
-                            res.end(session);
-                        }else{
-                            res.writeHeader(200, {'Content-Type': 'text/plain'});
-                            res.end("-1");
-                        }
-                    });
+                    LoginService.loginFromAnotherServer(req, res, responseHeader, session_manager);
                 }
                 break;
 
