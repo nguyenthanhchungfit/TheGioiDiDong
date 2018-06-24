@@ -62,6 +62,13 @@ app.createServer((req, res) => {
         case 'GET':
         {
             switch(Chuoi_url){
+                case '/test':{
+                    console.log("TEST - SERVICE");
+                    dataAccount.isExistedAccount("a", "1");
+                    res.writeHead(200, responseHeader);
+                    res.end(JSON.stringify({"data" : "OK"}));
+                }
+                break;
                 case '/getAllLaptop':
                 dataLaptop.getAllLaptop().then(function(result){
                     data=JSON.stringify(result);
@@ -141,6 +148,11 @@ app.createServer((req, res) => {
                editVal=body.editVal;
             });
             switch(req.url){
+                case '/loginUser':
+                {
+                    LoginService.loginUser(req, res, responseHeader, session_manager);
+                }
+                break;
                 case '/loginservice':
                 {
                     LoginService.loginFromAnotherServer(req, res, responseHeader, session_manager);

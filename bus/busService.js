@@ -21,6 +21,8 @@ app.createServer((req, res) => {
     var methodRequest = req.method;
     var urlRequest = req.url;
     console.log(`${urlRequest} - ${methodRequest}`);
+
+    // GET
     if(methodRequest == "GET"){
         switch(urlRequest){
             case '/getAllMobileForHome':
@@ -34,11 +36,12 @@ app.createServer((req, res) => {
                 res.end("Service not implement!!");
             }
         }
-        
+    // POST    
     }else if(methodRequest == "POST"){
         switch(urlRequest){
-            case '/loginservice':
+            case '/loginUser':
             {
+                LoginService.loginUser(req, res, responseHeader);
             }
             break;
             default:
@@ -55,8 +58,48 @@ app.createServer((req, res) => {
         console.log('==> Error: ' + err);
     else{
         console.log('Server is starting at port ' + port);
-        LoginService.loginServer();
+        var account = {username : "thanhchung", password: "NTCntc"};
+        LoginService.loginServer(account);
     }
 });
 
+// Xử lý command cho server
+process.stdin.resume();
+process.stdin.setEncoding('utf8');
 
+process.stdin.on('data', function (text) {
+    var cmd = text.trim();
+    var arguments = cmd.split(" ");
+    switch (arguments[0]){
+        case "helloworld":
+        {
+            console.log("Hello world!");
+            break;
+        }
+        case "login":
+        {
+            if(arguments.length != 3){
+                console.log("Wrong Argument Login: >> login account password");
+            }else{
+                var account = {username : arguments[1], password : arguments[2]}
+                LoginService.loginServer(account);
+            }
+            break;
+        }
+        case "quit":
+        {
+            quitServer();
+            break;
+        }
+        default:
+        {
+            console.log("Not reconized your command!!");
+            break;
+        } 
+    }
+});
+
+function quitServer() {
+  console.log('Now that process.stdin is paused, there is nothing more to do.');
+  process.exit();
+}

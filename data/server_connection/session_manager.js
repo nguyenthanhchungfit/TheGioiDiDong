@@ -148,6 +148,11 @@ class SessionsManager{
         return {"error" : "Your Account is not valid!"};
     }
 
+    getLoginSession(){
+        return {"error" : "Please login to Server!"};
+    }
+
+
     getField(field){
         var value = objData[`${field}`];
         if(value == undefined){
