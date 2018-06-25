@@ -127,7 +127,7 @@ class SessionsManager{
     removeSession(index){
         if(index < 0 || index > this.connections.length) return false;
         this.connections.splice(index, 1);
-        this.writeFileSync();
+        this.saveDataToFile();
         return true;
     }
 
@@ -137,6 +137,11 @@ class SessionsManager{
         return this.connections[index];
     }
 
+    // Lấy session tại vị trí index
+    getSesionAt(index){
+        if(index < 0 || index >= this.connections.length) return -1;
+        return this.connections[index];
+    }
 
     // Error Expired Session
     getExpiredError(){
@@ -146,10 +151,6 @@ class SessionsManager{
     // Error Login Account
     getLoginError(){
         return {"error" : "Your Account is not valid!"};
-    }
-
-    getLoginSession(){
-        return {"error" : "Please login to Server!"};
     }
 
 
@@ -163,7 +164,34 @@ class SessionsManager{
     
     setField(field, value){
         objData[`${field}`] = value;
-        writeData();
+        this.saveDataToFile();
+    }
+
+    // getField at session index
+    getField(index, field){
+        if(index < 0 || index >= this.connections.length) return -1;
+        var objData = this.connections[index];
+        var value = objData[`${field}`];
+        if(value == undefined){
+            return -1;
+        }
+        return value;
+    }
+    
+    // set value for field at session index
+    setField(index, field, value){
+        if(index < 0 || index >= this.connections.length) return -1;
+        var objData = this.connections[index];
+        objData[`${field}`] = value;
+        this.saveDataToFile();
+    }
+
+    // update field last_access at session index
+    updateNewLastAccessAt(index){
+        if(index < 0 || index >= this.connections.length) return -1;
+        this.connections[index].last_access = new Date();
+        this.saveDataToFile();
+        return 1;
     }
 }
 

@@ -1,4 +1,3 @@
-'use strict'
 //Khao Báo Biến
 var duong_dan_module_DL_mysql= './data_table_mysql//';
 
@@ -21,8 +20,10 @@ session_manager.loadDataFromFile();
 session_manager.printConnections();
 
 // Services
-const PhoneService = require("./services/PhoneService");
-const LoginService = require("./services/LoginService");
+const PhoneService = require("./services/DATAPhoneService");
+const LoginService = require("./services/DATALoginService");
+const LaptopService = require("./services/DATALaptopService");
+const TabletService = require("./services/DATATabletService");
 
 const dataLaptop = require(duong_dan_module_DL_mysql+"dataLaptop");
 const dataHinh = require(duong_dan_module_DL_mysql+"dataHinh");
@@ -64,9 +65,9 @@ app.createServer((req, res) => {
             switch(Chuoi_url){
                 case '/test':{
                     console.log("TEST - SERVICE");
-                    dataAccount.isExistedAccount("a", "1");
+                    var account = dataAccount.isExistedAccount("thanhchungKH1", "123456");
                     res.writeHead(200, responseHeader);
-                    res.end(JSON.stringify({"data" : "OK"}));
+                    res.end(JSON.stringify(account));
                 }
                 break;
                 case '/getAllLaptop':
@@ -157,9 +158,16 @@ app.createServer((req, res) => {
                     LoginService.loginFromAnotherServer(req, res, responseHeader, session_manager);
                 }
                 break;
-
                 case '/getAllMobileForHome' :
                     PhoneService.getAllMobileForHome(req, res, responseHeader);
+                break;
+
+                case '/getAllLaptopForHome' :
+                    LaptopService.getAllLaptopForHome(req, res, responseHeader);
+                break;
+
+                case '/getAllTabletForHome' :
+                    TabletService.getAllTabletForHome(req, res, responseHeader);
                 break;
 
                  // Thứ tự truyền para "primaryAttribute,editAttribute,primaryVal,editVal"
@@ -230,3 +238,52 @@ app.createServer((req, res) => {
     else
         console.log('Server is starting at port ' + port);
 });
+
+
+// Xử lý command cho server
+process.stdin.resume();
+process.stdin.setEncoding('utf8');
+
+process.stdin.on('data', function (text) {
+    var cmd = text.trim();
+    var arguments = cmd.split(" ");
+    switch (arguments[0]){
+        case "helloworld":
+        {
+            console.log("Hello world!");
+            break;
+        }
+        case "printConnections":
+        {
+            console.log("*** CURRENT CONNECTIONS: ")
+            session_manager.printConnections();
+            break;
+        }
+       
+        case "login":
+        {
+            if(arguments.length != 3){
+                console.log("Wrong Argument Login: >> login account password");
+            }else{
+                var account = {username : arguments[1], password : arguments[2]}
+                LoginService.loginServer(account);
+            }
+            break;
+        }
+        case "quit":
+        {
+            quitServer();
+            break;
+        }
+        default:
+        {
+            console.log("Not reconized your command!!");
+            break;
+        } 
+    }
+});
+
+function quitServer() {
+  console.log('Server is stopped!');
+  process.exit();
+}
