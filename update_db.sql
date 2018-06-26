@@ -8,3 +8,5 @@ ADD COLUMN duoc_ban boolean default true;
 
 ALTER TABLE tablet
 ADD COLUMN duoc_ban boolean default true;
+
+-- aaaa
