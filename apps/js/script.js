@@ -426,26 +426,28 @@ function loginUser(username, password){
     Xu_ly_HTTP.send(account);
 }
 
-function getConnectionToServer(){
+function updateConnectionToServer(){
     var currentSession = localStorage.getItem("sessionID");
     if(currentSession == undefined){
         currentSession = -1;
-    }
-    var Xu_ly_HTTP = new XMLHttpRequest();
-    var linkRequest = host + "/getConnection";
-    Xu_ly_HTTP.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status  == 200){
-            var objData = JSON.parse(this.responseText);
-            if (typeof(Storage) !== "undefined") {
-                localStorage.setItem("sessionID", objData.sessionID);
-                localStorage.setItem("type", objData.type);
-            } else {
-                alert('Sorry! No Web Storage support..');
+        localStorage.setItem("type", objData.type);
+    }else{
+        var Xu_ly_HTTP = new XMLHttpRequest();
+        var linkRequest = host + "/getConnection";
+        Xu_ly_HTTP.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status  == 200){
+                var objData = JSON.parse(this.responseText);
+                if (typeof(Storage) !== "undefined") {
+                    localStorage.setItem("sessionID", objData.sessionID);
+                    localStorage.setItem("type", objData.type);
+                } else {
+                    alert('Sorry! No Web Storage support..');
+                }
             }
-        }
-    };
-    Xu_ly_HTTP.open("GET", linkRequest, true);
-    Xu_ly_HTTP.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    Xu_ly_HTTP.setRequestHeader("session_user", currentSession);
-    Xu_ly_HTTP.send();
+        };
+        Xu_ly_HTTP.open("GET", linkRequest, true);
+        Xu_ly_HTTP.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        Xu_ly_HTTP.setRequestHeader("session_user", currentSession);
+        Xu_ly_HTTP.send();
+    }
 }

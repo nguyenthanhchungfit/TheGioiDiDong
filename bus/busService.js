@@ -7,7 +7,6 @@ const LaptopService = require('./services/BUSLaptopService');
 const TabletService = require('./services/BUSTabletService');
 const LoginService = require('./services/BUSLoginService');
 
-var server_accounts_manager = require('./server_connection/server_accounts_manager');
 
 var session_manager_class = require('./server_connection/session_manager');
 
@@ -107,17 +106,12 @@ process.stdin.on('data', function (text) {
     var cmd = text.trim();
     var arguments = cmd.split(" ");
     switch (arguments[0]){
-        case "helloworld":
-        {
-            console.log("Hello world!");
-            break;
-        }
         case "printConnections":
         {
             console.log("*** CURRENT CONNECTIONS: ")
             session_client_manager.printConnections();
+            break;
         }
-        break;
         case "login":
         {
             if(arguments.length != 3){
