@@ -1,7 +1,8 @@
 var host = "http://localhost:8002";
 
 $(document).ready(function(){
-    loadDanhSachLaptop();
+    loginUser('thanhchung', 'NTCntc');
+    //loadDanhSachLaptop();
 })
 
 $("#mobile_button").on('click', function(e){
@@ -394,6 +395,37 @@ function loadDanhSachTablet(){
 }
 
 // Connection
+
+function loginUser(username, password){
+
+    var account = `username=${username}&password=${password}`;
+    //var account = {username : username, password : password};
+
+    var currentSession = localStorage.getItem("sessionID");
+    if(currentSession == undefined){
+        currentSession = -1;
+    }
+    var Xu_ly_HTTP = new XMLHttpRequest();
+    var linkRequest = host + "/loginUser";
+    Xu_ly_HTTP.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status  == 200){
+            var objData = JSON.parse(this.responseText);
+            console.log(objData);
+            // if (typeof(Storage) !== "undefined") {
+            //     localStorage.setItem("sessionID", objData.sessionID);
+            //     localStorage.setItem("type", objData.type);
+            // } else {
+            //     alert('Sorry! No Web Storage support..');
+            // }
+        }
+    };
+    Xu_ly_HTTP.open("POST", linkRequest, true);
+    //Xu_ly_HTTP.setRequestHeader("Content-type", "application/json");
+    Xu_ly_HTTP.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    Xu_ly_HTTP.setRequestHeader("session_user", currentSession);
+    Xu_ly_HTTP.send(account);
+}
+
 function getConnectionToServer(){
     var currentSession = localStorage.getItem("sessionID");
     if(currentSession == undefined){

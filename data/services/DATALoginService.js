@@ -61,7 +61,6 @@ function loginUser(req, res, responseHeader, session_manager){
                 console.log('sessionAccount : ', sessionAccount);
                 // session hết hạn
                 if(session_manager.isExpiredDate(sessionAccount.last_access, sessionAccount.time_out)){
-                    flagLoginAccount = true;
                     console.log(`session: ${sessionID} expired!`);
                     res.end(JSON.stringify(session_manager.getExpiredError()));
                 // sesion còn hạn

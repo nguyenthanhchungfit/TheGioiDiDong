@@ -45,7 +45,7 @@ class SessionsManager{
     }
 
     // Tạo một session mới, đồng thời cập nhật dữ liệu xuống file
-    insertNewConnection(){
+    insertNewConnection(username, type){
         if(this.connections.length === this.size){
             return -1;
         }
@@ -57,7 +57,7 @@ class SessionsManager{
             }
             var key = this.createSessionKey(length_key);
             if(this.isExistedKey(key) < 0){
-                var new_session = {"sessionID" : key, "time_out" : this.timeout, "last_access" : new Date()}
+                var new_session = {"sessionID" : key, "time_out" : this.timeout, "last_access" : new Date(), "username" : username, "type" : type};
                 this.connections.push(new_session);
                 this.saveDataToFile();
                 return key;
