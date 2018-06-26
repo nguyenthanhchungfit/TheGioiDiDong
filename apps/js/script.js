@@ -1,9 +1,14 @@
 var host = "http://localhost:8002";
 
 $(document).ready(function(){
-    loginUser('thanhchung', 'NTCntc');
-    //loadDanhSachLaptop();
+    //loginUser('thanhchung', 'NTCntc');
+    loadDanhSachLaptop();
 })
+
+$("#home_button").on('click', function(e){
+    e.preventDefault();
+    loadDanhSachPhone();
+});
 
 $("#mobile_button").on('click', function(e){
     e.preventDefault();
@@ -48,7 +53,7 @@ function Tao_The_hien_Mobile(objData){
             var phone = objData[i];
             var ma_dien_thoai = phone.ma_dien_thoai;
             var ten_dien_thoai = phone.ten_dien_thoai;
-            var gia = phone.gia;
+            var gia = phone.gia.toLocaleString("vi");
             var ma_hinh = phone.ma_hinh;
             
             // 1.Tạo div Product
@@ -144,7 +149,7 @@ function Tao_The_hien_Laptop(objData){
             var laptop = objData[i];
             var ma_laptop = laptop.ma_laptop;
             var ten_laptop = laptop.ten_laptop;
-            var gia = laptop.gia;
+            var gia = laptop.gia.toLocaleString("vi");
             var ma_hinh = laptop.ma_hinh;
             
             // 1.Tạo div Product
@@ -240,7 +245,7 @@ function Tao_The_hien_Tablet(objData){
             var tablet = objData[i];
             var ma_tablet = tablet.ma_tablet;
             var ten_tablet = tablet.ten_tablet;
-            var gia = tablet.gia;
+            var gia = tablet.gia.toLocaleString("vi");
             var ma_hinh = tablet.ma_hinh;
             
             // 1.Tạo div Product
