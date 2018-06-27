@@ -6,6 +6,7 @@ const PhoneService = require('./services/BUSPhoneService');
 const LaptopService = require('./services/BUSLaptopService');
 const TabletService = require('./services/BUSTabletService');
 const LoginService = require('./services/BUSLoginService');
+const update = require('./services/BUSUpdateService');
 
 
 var session_manager_class = require('./server_connection/session_manager');
@@ -52,6 +53,23 @@ app.createServer((req, res) => {
                 TabletService.getAllTabletForHome(req, res, responseHeader);
             }
             break;
+
+            case '/getAllMobileForAD':
+            {
+                PhoneService.getAllMobileForAD(req, res, responseHeader);
+            }
+            break;
+            case '/getAllLaptopForAD':
+            {
+                LaptopService.getAllLaptopForAD(req, res, responseHeader);
+            }
+            break;
+            case '/getAllTabletForAD':
+            {
+                console.log("tablet..............");
+                TabletService.getAllTabletForAD(req, res, responseHeader);
+            }
+            break;
             default:
             {
                 res.writeHeader(200, {'Content-Type': 'text/plain'});
@@ -65,6 +83,12 @@ app.createServer((req, res) => {
             case '/loginUser':
             {
                 LoginService.loginUser(req, res, responseHeader, session_client_manager);
+            }
+            break;
+            case '/update':
+            {
+                console.log("update long");
+                update.update(req, res, responseHeader, session_client_manager);
             }
             break;
             default:

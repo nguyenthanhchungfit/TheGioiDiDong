@@ -10,7 +10,16 @@ function getAllLaptopForHome(req, res, responseHeader){
     });
 }
 
+function getAllLaptopForAD(req, res, responseHeader){
+    dataLaptop.getAllLaptop().then(function(result){
+        data = JSON.stringify(result);
+        res.writeHeader(200, responseHeader);
+        res.end(data);
+    });
+}
+
 
 module.exports = {
-    getAllLaptopForHome : getAllLaptopForHome
+    getAllLaptopForHome : getAllLaptopForHome,
+    getAllLaptopForAD : getAllLaptopForAD
 }

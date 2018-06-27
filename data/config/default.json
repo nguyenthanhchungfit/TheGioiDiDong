@@ -8,7 +8,7 @@
         "port": 3306,
         "database" : "thegioididong",
         "user" : "root",
-        "password" : "admin"
+        "password" : ""
     },
     "salt" : "TGDD"
 }

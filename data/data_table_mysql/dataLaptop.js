@@ -5,7 +5,10 @@ const q = require("q");
 var connection = db.getConnection();
 
 function getAllLaptop(){
-    var sql = `SELECT * FROM laptop`;
+    var sql = `SELECT DISTINCT lt.ma_laptop, lt.ten_laptop, lt.gia, lt.so_luong_ton ,h.ma_hinh from laptop as lt 
+    JOIN hinh as h
+    ON lt.ma_thiet_bi = h.ma_thiet_bi 
+    GROUP BY lt.ma_laptop`;
     return common_handle_data.getAllInfo(sql);
 }
 
