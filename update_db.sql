@@ -105,3 +105,12 @@ VALUES ('TDT000', 'DT000_0000.png'),
 ('TTL009', 'TL009_0000.png'),
 ('TTL009', 'TL009_0001.jpg'),
 ('TTL009', 'TL009_0002.jpg');
+
+-- 28-06-2018
+INSERT INTO account 
+  VALUES ("thanhchungKH1", "123456", 1),
+  ("thanhchungKH1", "123456", 1),
+  ("thanhchungKH1", "123456", 2),
+  ("thanhchungKH1", "123456", 2),
+  ("thanhchungKH1", "123456", 3),
+  ("thanhchungKH1", "123456", 3)

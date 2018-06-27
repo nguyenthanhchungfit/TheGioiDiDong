@@ -1,35 +1,84 @@
 var host = "http://localhost:8002";
 
-$(document).ready(function(){
-    //loginUser('thanhchung', 'NTCntc');
-    loadDanhSachLaptop();
+$(document).ready(function () {
+    updateConnectionToServer();
 })
 
-$("#home_button").on('click', function(e){
+$("#home_button").on('click', function (e) {
     e.preventDefault();
     loadDanhSachPhone();
 });
 
-$("#mobile_button").on('click', function(e){
+$("#mobile_button").on('click', function (e) {
     e.preventDefault();
     loadDanhSachPhone();
 });
 
-$("#laptop_button").on('click', function(e){
+$("#laptop_button").on('click', function (e) {
     e.preventDefault();
     loadDanhSachLaptop();
 });
 
-$("#tablet_button").on('click', function(e){
+$("#tablet_button").on('click', function (e) {
     e.preventDefault();
     loadDanhSachTablet();
 });
 
+$("#btnLogin").on('click', function () {
+    var account = $("#account").val();
+    var password = $("#password").val();
+    alert(account);
+    alert(password);
+    if (account == "" || password == "") {
+        $("#loginError").css("color", "red");
+        $("#loginError").text("Vui lòng nhập đầy đủ thông tin!");
+        return;
+    }
+    loginUser(account, password);
+
+
+});
+
+$("#logout_account_li").on('click', function () {
+    logoutUser();
+});
+
+$("#mycart").on('click', function () {
+    alert("my cart click");
+})
+
+$("#danh_sach_sp").on('click', 'button', function (e) {
+    $parentID = $(this).parent().parent().parent();
+    var id = $parentID.attr("id");
+    var orders = localStorage.getItem("orders");
+    if (orders == undefined) {
+        orders = [];
+    } else {
+        orders = JSON.parse(orders);
+    }
+
+    alert(id);
+    var flag = false;
+    for (var i = 0; i < orders.length; i++) {
+        if (id == orders[i]) {
+            alert("Sản phẩm đã có trong giỏ hàng!");
+            flag = true;
+            break;
+        }
+    }
+    if (flag == false) {
+        orders.push(id);
+    }
+    $("#so_luong_sach").text(orders.length);
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+})
+
 // -----------------------------Tạo giao diện
-function Tao_The_hien_Mobile(objData){
-    if(objData){
+function Tao_The_hien_Mobile(objData) {
+    if (objData) {
         var typeUser = localStorage.getItem("type");
-        if(typeUser == undefined){
+        if (typeUser == undefined) {
             typeUser = 0;
         }
 
@@ -44,9 +93,9 @@ function Tao_The_hien_Mobile(objData){
 
         container.appendChild(row);
 
-        for(var i = 0; i < length; i++){
+        for (var i = 0; i < length; i++) {
             var rowItem
-            if(i % 6 == 0){
+            if (i % 6 == 0) {
                 rowItem = document.createElement("div");
                 rowItem.className = "row";
             }
@@ -55,7 +104,8 @@ function Tao_The_hien_Mobile(objData){
             var ten_dien_thoai = phone.ten_dien_thoai;
             var gia = phone.gia.toLocaleString("vi");
             var ma_hinh = phone.ma_hinh;
-            
+            var so_luong_ton = "Số lượng tồn: " + phone.so_luong_ton;
+
             // 1.Tạo div Product
             var divProduct = document.createElement("div");
             divProduct.classList = "col-md-2 product product-single";
@@ -69,7 +119,7 @@ function Tao_The_hien_Mobile(objData){
             aProductImg.href = "/phone?id=" + ma_dien_thoai;
 
             var imgProductImg = document.createElement("img");
-            imgProductImg.className = "img_thubnail_home";     
+            imgProductImg.className = "img_thubnail_home";
             imgProductImg.src = "./img/mobile/" + ma_hinh;
 
             aProductImg.appendChild(imgProductImg);
@@ -93,10 +143,15 @@ function Tao_The_hien_Mobile(objData){
             aProductName.innerText = ten_dien_thoai;
             h2ProductName.appendChild(aProductName);
             divProductBody.appendChild(h2ProductName);
-
+            if (typeUser == 2) {
+                var pSoLuongTon = document.createElement("p");
+                pSoLuongTon.id = "so_luong_ton_pro";
+                pSoLuongTon.innerText = so_luong_ton;
+                divProductBody.appendChild(pSoLuongTon);
+            }
 
             // 1.2.3 Tạo button add to cart
-            if(typeUser == 2){
+            if (typeUser == 2) {
                 var divProductButton = document.createElement("div");
                 divProductButton.className = "product-btns";
                 var buttonProductButton = document.createElement("button");
@@ -111,21 +166,21 @@ function Tao_The_hien_Mobile(objData){
 
             divProduct.appendChild(divProductImg);
             divProduct.appendChild(divProductBody);
-            
+
             rowItem.appendChild(divProduct);
-            if((i == length - 1) || ((i % 6) == 5)){
+            if ((i == length - 1) || ((i % 6) == 5)) {
                 container.appendChild(rowItem);
-            }     
+            }
         }
 
         return container;
     }
 }
 
-function Tao_The_hien_Laptop(objData){
-    if(objData){
+function Tao_The_hien_Laptop(objData) {
+    if (objData) {
         var typeUser = localStorage.getItem("type");
-        if(typeUser == undefined){
+        if (typeUser == undefined) {
             typeUser = 0;
         }
 
@@ -140,9 +195,9 @@ function Tao_The_hien_Laptop(objData){
 
         container.appendChild(row);
 
-        for(var i = 0; i < length; i++){
+        for (var i = 0; i < length; i++) {
             var rowItem
-            if(i % 6 == 0){
+            if (i % 6 == 0) {
                 rowItem = document.createElement("div");
                 rowItem.className = "row";
             }
@@ -151,7 +206,8 @@ function Tao_The_hien_Laptop(objData){
             var ten_laptop = laptop.ten_laptop;
             var gia = laptop.gia.toLocaleString("vi");
             var ma_hinh = laptop.ma_hinh;
-            
+            var so_luong_ton = "Số lượng tồn: " + laptop.so_luong_ton;
+
             // 1.Tạo div Product
             var divProduct = document.createElement("div");
             divProduct.classList = "col-md-2 product product-single";
@@ -165,7 +221,7 @@ function Tao_The_hien_Laptop(objData){
             aProductImg.href = "/laptop?id=" + ma_laptop;
 
             var imgProductImg = document.createElement("img");
-            imgProductImg.className = "img_thubnail_home";     
+            imgProductImg.className = "img_thubnail_home";
             imgProductImg.src = "./img/laptop/" + ma_hinh;
 
             aProductImg.appendChild(imgProductImg);
@@ -190,9 +246,15 @@ function Tao_The_hien_Laptop(objData){
             h2ProductName.appendChild(aProductName);
             divProductBody.appendChild(h2ProductName);
 
+            if (typeUser == 2) {
+                var pSoLuongTon = document.createElement("p");
+                pSoLuongTon.id = "so_luong_ton_pro";
+                pSoLuongTon.innerText = so_luong_ton;
+                divProductBody.appendChild(pSoLuongTon);
+            }
 
             // 1.2.3 Tạo button add to cart
-            if(typeUser == 2){
+            if (typeUser == 2) {
                 var divProductButton = document.createElement("div");
                 divProductButton.className = "product-btns";
                 var buttonProductButton = document.createElement("button");
@@ -207,21 +269,21 @@ function Tao_The_hien_Laptop(objData){
 
             divProduct.appendChild(divProductImg);
             divProduct.appendChild(divProductBody);
-            
+
             rowItem.appendChild(divProduct);
-            if((i == length - 1) || ((i % 6) == 5)){
+            if ((i == length - 1) || ((i % 6) == 5)) {
                 container.appendChild(rowItem);
-            }     
+            }
         }
 
         return container;
     }
 }
 
-function Tao_The_hien_Tablet(objData){
-    if(objData){
+function Tao_The_hien_Tablet(objData) {
+    if (objData) {
         var typeUser = localStorage.getItem("type");
-        if(typeUser == undefined){
+        if (typeUser == undefined) {
             typeUser = 0;
         }
 
@@ -236,9 +298,9 @@ function Tao_The_hien_Tablet(objData){
 
         container.appendChild(row);
 
-        for(var i = 0; i < length; i++){
+        for (var i = 0; i < length; i++) {
             var rowItem
-            if(i % 6 == 0){
+            if (i % 6 == 0) {
                 rowItem = document.createElement("div");
                 rowItem.className = "row";
             }
@@ -247,7 +309,8 @@ function Tao_The_hien_Tablet(objData){
             var ten_tablet = tablet.ten_tablet;
             var gia = tablet.gia.toLocaleString("vi");
             var ma_hinh = tablet.ma_hinh;
-            
+            var so_luong_ton = "Số lượng tồn: " + tablet.so_luong_ton;
+
             // 1.Tạo div Product
             var divProduct = document.createElement("div");
             divProduct.classList = "col-md-2 product product-single";
@@ -261,7 +324,7 @@ function Tao_The_hien_Tablet(objData){
             aProductImg.href = "/phone?id=" + ma_tablet;
 
             var imgProductImg = document.createElement("img");
-            imgProductImg.className = "img_thubnail_home";     
+            imgProductImg.className = "img_thubnail_home";
             imgProductImg.src = "./img/tablet/" + ma_hinh;
 
             aProductImg.appendChild(imgProductImg);
@@ -286,9 +349,15 @@ function Tao_The_hien_Tablet(objData){
             h2ProductName.appendChild(aProductName);
             divProductBody.appendChild(h2ProductName);
 
+            if (typeUser == 2) {
+                var pSoLuongTon = document.createElement("p");
+                pSoLuongTon.id = "so_luong_ton_pro";
+                pSoLuongTon.innerText = so_luong_ton;
+                divProductBody.appendChild(pSoLuongTon);
+            }
 
             // 1.2.3 Tạo button add to cart
-            if(typeUser == 2){
+            if (typeUser == 2) {
                 var divProductButton = document.createElement("div");
                 divProductButton.className = "product-btns";
                 var buttonProductButton = document.createElement("button");
@@ -303,40 +372,62 @@ function Tao_The_hien_Tablet(objData){
 
             divProduct.appendChild(divProductImg);
             divProduct.appendChild(divProductBody);
-            
+
             rowItem.appendChild(divProduct);
-            if((i == length - 1) || ((i % 6) == 5)){
+            if ((i == length - 1) || ((i % 6) == 5)) {
                 container.appendChild(rowItem);
-            }     
+            }
         }
 
         return container;
     }
 }
 
-
+function Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(type) {
+    if (type == 1 || type == 2 || type == 3) {
+        $("#login_button_li").css("display", "none");
+        $("#login_account_li").css("display", "");
+        $("#logout_account_li").css("display", "");
+        if (type == 1) {
+            $('#account_name').text("Khách hàng");
+            $('#account_name').attr("href", "#");
+        } else if (type == 2) {
+            $('#account_name').text("Nhân viên");
+            $('#account_name').attr("href", "#");
+            $("#mycart").css("display", "");
+        } else if (type == 3) {
+            $('#account_name').text("Quản lý");
+            $('#account_name').attr("href", "/admin");
+        }
+    } else {
+        $("#login_button_li").css("display", "");
+        $("#login_account_li").css("display", "none");
+        $("#logout_account_li").css("display", "none");
+        $("#mycart").css("display", "none");
+    }
+}
 // -----------------------------Xử lý nghiệp vụ
 
 
 // -----------------------------Thực hiện đọc/ghi dữ liệu
-function loadDanhSachPhone(){
+function loadDanhSachPhone() {
     var currentSession = localStorage.getItem("sessionID");
-    if(currentSession == undefined){
+    if (currentSession == undefined) {
         currentSession = -1;
     }
     var Xu_ly_HTTP = new XMLHttpRequest();
     var linkRequest = host + "/getAllMobileForHome";
-    Xu_ly_HTTP.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status  == 200){
+    Xu_ly_HTTP.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
             var objData = JSON.parse(this.responseText);
             console.log(objData);
-            if(objData.error){
+            if (objData.error) {
                 $("#danh_sach_sp").html("No Data Tranfser");
-            }else{
+            } else {
                 var htmlMobile = Tao_The_hien_Mobile(objData);
                 $("#danh_sach_sp").html(htmlMobile);
             }
-            
+
         }
     };
     Xu_ly_HTTP.open("GET", linkRequest, true);
@@ -345,25 +436,25 @@ function loadDanhSachPhone(){
     Xu_ly_HTTP.send();
 }
 
-function loadDanhSachLaptop(){
+function loadDanhSachLaptop() {
     var currentSession = localStorage.getItem("sessionID");
-    if(currentSession == undefined){
+    if (currentSession == undefined) {
         currentSession = -1;
     }
 
     var Xu_ly_HTTP = new XMLHttpRequest();
     var linkRequest = host + "/getAllLaptopForHome";
-    Xu_ly_HTTP.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status  == 200){
+    Xu_ly_HTTP.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
             var objData = JSON.parse(this.responseText);
             console.log(objData);
-            if(objData.error){
+            if (objData.error) {
                 $("#danh_sach_sp").html("No Data Tranfser");
-            }else{  
+            } else {
                 var htmlLaptop = Tao_The_hien_Laptop(objData);
                 $("#danh_sach_sp").html(htmlLaptop);
             }
-            
+
         }
     };
     Xu_ly_HTTP.open("GET", linkRequest, true);
@@ -372,25 +463,25 @@ function loadDanhSachLaptop(){
     Xu_ly_HTTP.send();
 }
 
-function loadDanhSachTablet(){
+function loadDanhSachTablet() {
     var currentSession = localStorage.getItem("sessionID");
-    if(currentSession == undefined){
+    if (currentSession == undefined) {
         currentSession = -1;
     }
 
     var Xu_ly_HTTP = new XMLHttpRequest();
     var linkRequest = host + "/getAllTabletForHome";
-    Xu_ly_HTTP.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status  == 200){
+    Xu_ly_HTTP.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
             var objData = JSON.parse(this.responseText);
             console.log(objData);
-            if(objData.error){
+            if (objData.error) {
                 $("#danh_sach_sp").html("No Data Tranfser");
-            }else{  
+            } else {
                 var htmlTablet = Tao_The_hien_Tablet(objData);
                 $("#danh_sach_sp").html(htmlTablet);
             }
-            
+
         }
     };
     Xu_ly_HTTP.open("GET", linkRequest, true);
@@ -399,54 +490,69 @@ function loadDanhSachTablet(){
     Xu_ly_HTTP.send();
 }
 
+function updateSoLuongThietBi() {
+    var orders = localStorage.getItem("orders");
+    if (orders == undefined) {
+        orders = [];
+    } else {
+        orders = JSON.parse(orders);
+    }
+    $("#so_luong_sach").text(orders.length);
+}
+
 // Connection
 
-function loginUser(username, password){
+function loginUser(username, password) {
 
     var account = `username=${username}&password=${password}`;
     //var account = {username : username, password : password};
 
     var currentSession = localStorage.getItem("sessionID");
-    if(currentSession == undefined){
+    if (currentSession == undefined) {
         currentSession = -1;
     }
     var Xu_ly_HTTP = new XMLHttpRequest();
     var linkRequest = host + "/loginUser";
-    Xu_ly_HTTP.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status  == 200){
+    Xu_ly_HTTP.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
             var objData = JSON.parse(this.responseText);
             console.log(objData);
-            // if (typeof(Storage) !== "undefined") {
-            //     localStorage.setItem("sessionID", objData.sessionID);
-            //     localStorage.setItem("type", objData.type);
-            // } else {
-            //     alert('Sorry! No Web Storage support..');
-            // }
+            if (typeof (Storage) !== "undefined") {
+                if (!objData.error) {
+                    localStorage.setItem("sessionID", objData.sessionID);
+                    localStorage.setItem("type", objData.type);
+                    Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(objData.type);
+                    loadDanhSachPhone();
+                } else {
+                    alert(objData.error);
+                }
+            } else {
+                alert('Sorry! No Web Storage support..');
+            }
         }
     };
     Xu_ly_HTTP.open("POST", linkRequest, true);
-    //Xu_ly_HTTP.setRequestHeader("Content-type", "application/json");
     Xu_ly_HTTP.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     Xu_ly_HTTP.setRequestHeader("session_user", currentSession);
     Xu_ly_HTTP.send(account);
 }
 
-function updateConnectionToServer(){
+function logoutUser() {
     var currentSession = localStorage.getItem("sessionID");
-    if(currentSession == undefined){
+    if (currentSession == undefined) {
         currentSession = -1;
-        localStorage.setItem("type", objData.type);
-    }else{
+    } else {
         var Xu_ly_HTTP = new XMLHttpRequest();
-        var linkRequest = host + "/getConnection";
-        Xu_ly_HTTP.onreadystatechange = function(){
-            if(this.readyState == 4 && this.status  == 200){
+        var linkRequest = host + "/logout";
+        Xu_ly_HTTP.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
                 var objData = JSON.parse(this.responseText);
-                if (typeof(Storage) !== "undefined") {
-                    localStorage.setItem("sessionID", objData.sessionID);
-                    localStorage.setItem("type", objData.type);
-                } else {
-                    alert('Sorry! No Web Storage support..');
+                alert(objData);
+                if (objData.success == "OK") {
+                    localStorage.removeItem("sessionID");
+                    localStorage.removeItem("type");
+                    localStorage.removeItem("orders");
+                    Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(0);
                 }
             }
         };
@@ -454,5 +560,49 @@ function updateConnectionToServer(){
         Xu_ly_HTTP.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         Xu_ly_HTTP.setRequestHeader("session_user", currentSession);
         Xu_ly_HTTP.send();
+    }
+}
+
+function updateConnectionToServer() {
+    var currentSession = localStorage.getItem("sessionID");
+    if (currentSession == undefined || currentSession == -1) {
+        localStorage.setItem("type", 0);
+        Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(0);
+        loadDanhSachPhone();
+    } else {
+        var typeUser = localStorage.getItem("type");
+        if (typeUser == 1 || typeUser == 2 || typeUser == 3) {
+            var Xu_ly_HTTP = new XMLHttpRequest();
+            var linkRequest = host + "/getConnection";
+            Xu_ly_HTTP.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var objData = JSON.parse(this.responseText);
+                    if (typeof (Storage) !== "undefined") {
+                        if(!objData.error){
+                            localStorage.setItem("sessionID", objData.sessionID);
+                            localStorage.setItem("type", objData.type);
+                            Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(objData.type);
+                            loadDanhSachPhone();
+                            updateSoLuongThietBi();
+                        }else{
+                            alert(objData.error);
+                            Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(0);
+                            loadDanhSachPhone();
+                        }
+                    } else {
+                        alert('Sorry! No Web Storage support..');
+                        Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(0);
+                        loadDanhSachPhone();
+                    }
+                }
+            };
+            Xu_ly_HTTP.open("GET", linkRequest, true);
+            Xu_ly_HTTP.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            Xu_ly_HTTP.setRequestHeader("session_user", currentSession);
+            Xu_ly_HTTP.send();
+        }else{
+            Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(0);
+            loadDanhSachPhone();
+        }
     }
 }

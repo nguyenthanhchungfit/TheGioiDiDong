@@ -52,6 +52,14 @@ app.createServer((req, res) => {
                 TabletService.getAllTabletForHome(req, res, responseHeader);
             }
             break;
+            case '/logout':{
+                LoginService.logout(req, res, responseHeader, session_client_manager);
+            }
+            break;
+            case '/getConnection':{
+                LoginService.getConnection(req, res, responseHeader, session_client_manager);
+            }
+            break;
             default:
             {
                 res.writeHeader(200, {'Content-Type': 'text/plain'});

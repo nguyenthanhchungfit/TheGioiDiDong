@@ -72,101 +72,61 @@
 				<div class="pull-right">
 					<ul class="header-btns">
 						<!-- Account -->
-						<li class="header-account dropdown default-dropdown">
-							<div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
-								<div class="header-btns-icon">
-									<i class="fa fa-user-o"></i>
-								</div>
-								<strong class="text-uppercase">My Account
-									<i class="fa fa-caret-down"></i>
-								</strong>
-							</div>
-							<a href="#" class="text-uppercase">Login</a> /
-							<a href="#" class="text-uppercase">Join</a>
-							<ul class="custom-menu">
-								<li>
-									<a href="#">
-										<i class="fa fa-user-circle"></i> My Account</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa fa-heart-o"></i> My Wishlist</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa fa-exchange"></i> Compare</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa fa-check"></i> Checkout</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa fa-unlock-alt"></i> Login</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa fa-user-plus"></i> Create An Account</a>
-								</li>
-							</ul>
+						<li id="login_account_li" class="my_text_login" style="display:none;">
+							<a href="#" id="account_name">Account</a>
 						</li>
 						<!-- /Account -->
 
+						<!-- Logout -->
+						<li id="logout_account_li" class="my_cursor_point" style="display:none;">
+								<button type="button" class="btn btn-primary">Logout</button>
+						</li>
+						<!-- /Logout -->
+
+
+						<!-- Login -->
+						<li id="login_button_li" class="header-account dropdown default-dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<i class="fa fa-sign-in" aria-hidden="true"></i>
+								<strong class="my_text_login">LOGIN</strong>
+							</a>
+							<ul id="login-dp" class="dropdown-menu">
+								<li>
+									<div class="row">
+										<div class="col-md-12">
+											<form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+												<div class="form-group">
+													<label class="sr-only" for="account">Account</label>
+													<input type="text" class="form-control" name="account" id="account" placeholder="Account" required>
+												</div>
+												<div class="form-group">
+													<label class="sr-only" for="password">Password</label>
+													<input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+												</div>
+												<div class="form-group">
+													<button id="btnLogin" type="button" class="btn btn-primary btn-block">Log in</button>
+												</div>
+												<div id="loginError">
+
+												</div>
+											</form>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</li>
+
 						<!-- Cart -->
-						<li class="header-cart dropdown default-dropdown">
-							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+						<li id="mycart" style="display:none;" class="header-cart dropdown default-dropdown my_cursor_point">
+							<a>
 								<div class="header-btns-icon">
 									<i class="fa fa-cart-plus"></i>
-									<span class="qty">3</span>
+									<span id="so_luong_sach" class="qty">0</span>
 								</div>
-								<strong class="text-uppercase">My Cart:</strong>
+								<strong class="text-uppercase">Đơn hàng</strong>
 								<br>
-								<span>35.20$</span>
+								<span> </span>
 							</a>
-							<div class="custom-menu">
-								<div id="shopping-cart">
-									<div class="shopping-cart-list">
-										<div class="product product-widget">
-											<div class="product-thumb">
-												<img src="./img/thumb-product01.jpg" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-price">$32.50
-													<span class="qty">x3</span>
-												</h3>
-												<h2 class="product-name">
-													<a href="#">Product Name Goes Here</a>
-												</h2>
-											</div>
-											<button class="cancel-btn">
-												<i class="fa fa-trash"></i>
-											</button>
-										</div>
-										<div class="product product-widget">
-											<div class="product-thumb">
-												<img src="./img/thumb-product01.jpg" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-price">$32.50
-													<span class="qty">x3</span>
-												</h3>
-												<h2 class="product-name">
-													<a href="#">Product Name Goes Here</a>
-												</h2>
-											</div>
-											<button class="cancel-btn">
-												<i class="fa fa-trash"></i>
-											</button>
-										</div>
-									</div>
-									<div class="shopping-cart-btns">
-										<button class="main-btn">View Cart</button>
-										<button class="primary-btn">Checkout
-											<i class="fa fa-arrow-circle-right"></i>
-										</button>
-									</div>
-								</div>
-							</div>
 						</li>
 						<!-- /Cart -->
 
@@ -198,16 +158,16 @@
 						<i class="fa fa-bars"></i>
 					</span>
 					<ul class="menu-list">
-						<li>
+						<li class="my_cursor_point">
 							<a id="home_button">Home</a>
 						</li>
-						<li>
+						<li class="my_cursor_point">
 							<a id="mobile_button">Mobile</a>
 						</li>
-						<li>
+						<li class="my_cursor_point">
 							<a id="tablet_button">Tablet</a>
 						</li>
-						<li>
+						<li class="my_cursor_point">
 							<a id="laptop_button">Laptop </a>
 						</li>
 					</ul>
@@ -274,8 +234,8 @@
 
 	<!-- section -->
 	<div class="session">
-		<div id="danh_sach_sp">			
-			
+		<div id="danh_sach_sp">
+
 		</div>
 
 	</div>
@@ -283,8 +243,8 @@
 
 	<!-- section -->
 	<div class="session">
-		<div id="mua_hang">			
-			
+		<div id="mua_hang">
+
 		</div>
 
 	</div>
@@ -305,7 +265,7 @@
 						Copyright &copy;
 						<script>
 							document.write(new Date().getFullYear());
-						</script> All rights reserved | CNXML 2018	
+						</script> All rights reserved | CNXML 2018
 						<i class="fa fa-heart-o" aria-hidden="true"></i> BY
 						<a href="https://colorlib.com" target="_blank">TC</a>
 						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
