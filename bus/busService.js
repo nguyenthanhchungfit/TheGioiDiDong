@@ -2,14 +2,19 @@ var app = require('http');
 var url = require('url');
 var query = require('querystring');
 
-const PhoneService = require('./services/PhoneService');
-const LoginService = require('./services/LoginService');
+const PhoneService = require('./services/BUSPhoneService');
+const LaptopService = require('./services/BUSLaptopService');
+const TabletService = require('./services/BUSTabletService');
+const LoginService = require('./services/BUSLoginService');
+
 
 var session_manager_class = require('./server_connection/session_manager');
-var server_accounts_manager = require('./server_connection/server_accounts_manager');
 
-var session_manager = new session_manager_class(10);
-var session_connect_bus = -1;
+const session_client_store_path= __dirname + "/server_connection/session_client_storage.json";
+const session_client_amount_manager = 100;
+var session_client_manager = new session_manager_class(session_client_amount_manager, session_client_store_path);
+
+
 
 
 const port = 8002;
@@ -25,9 +30,26 @@ app.createServer((req, res) => {
     // GET
     if(methodRequest == "GET"){
         switch(urlRequest){
+            case '/test':{
+                console.log(req.headers);
+                console.log(req.headers.session_user); 
+                res.writeHead(200, responseHeader);
+                res.end(JSON.stringify({'result' : 'OK'}));      
+            }
+            break;
             case '/getAllMobileForHome':
             {
                 PhoneService.getAllMobileForHome(req, res, responseHeader);
+            }
+            break;
+            case '/getAllLaptopForHome':
+            {
+                LaptopService.getAllLaptopForHome(req, res, responseHeader);
+            }
+            break;
+            case '/getAllTabletForHome':
+            {
+                TabletService.getAllTabletForHome(req, res, responseHeader);
             }
             break;
             default:
@@ -39,9 +61,10 @@ app.createServer((req, res) => {
     // POST    
     }else if(methodRequest == "POST"){
         switch(urlRequest){
+           
             case '/loginUser':
             {
-                LoginService.loginUser(req, res, responseHeader);
+                LoginService.loginUser(req, res, responseHeader, session_client_manager);
             }
             break;
             default:
@@ -51,6 +74,18 @@ app.createServer((req, res) => {
             }
         }
         
+    }else if(methodRequest == "OPTIONS"){
+        console.log('!OPTIONS');
+        var headers = {};
+        // IE8 does not allow domains to be specified, just the *
+        // headers["Access-Control-Allow-Origin"] = req.headers.origin;
+        headers["Access-Control-Allow-Origin"] = "*";
+        headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
+        headers["Access-Control-Allow-Credentials"] = false;
+        headers["Access-Control-Max-Age"] = '86400'; // 24 hours
+        headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, session_user";
+        res.writeHead(200, headers);
+        res.end();
     }
     
 }).listen(port, (err) => {
@@ -71,9 +106,10 @@ process.stdin.on('data', function (text) {
     var cmd = text.trim();
     var arguments = cmd.split(" ");
     switch (arguments[0]){
-        case "helloworld":
+        case "printConnections":
         {
-            console.log("Hello world!");
+            console.log("*** CURRENT CONNECTIONS: ")
+            session_client_manager.printConnections();
             break;
         }
         case "login":
@@ -100,6 +136,6 @@ process.stdin.on('data', function (text) {
 });
 
 function quitServer() {
-  console.log('Now that process.stdin is paused, there is nothing more to do.');
+  console.log('Server is stopped!');
   process.exit();
 }

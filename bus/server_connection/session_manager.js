@@ -1,6 +1,6 @@
 'use strict'
 const fs = require("fs");
-var const_path_data = __dirname + "/session_storage.json";
+
 
 const length_key = 10;
 
@@ -45,7 +45,7 @@ class SessionsManager{
     }
 
     // Tạo một session mới, đồng thời cập nhật dữ liệu xuống file
-    insertNewConnection(){
+    insertNewConnection(username, type){
         if(this.connections.length === this.size){
             return -1;
         }
@@ -57,7 +57,7 @@ class SessionsManager{
             }
             var key = this.createSessionKey(length_key);
             if(this.isExistedKey(key) < 0){
-                var new_session = {"sessionID" : key, "time_out" : this.timeout, "last_access" : new Date()}
+                var new_session = {"sessionID" : key, "time_out" : this.timeout, "last_access" : new Date(), "username" : username, "type" : type};
                 this.connections.push(new_session);
                 this.saveDataToFile();
                 return key;
@@ -127,7 +127,7 @@ class SessionsManager{
     removeSession(index){
         if(index < 0 || index > this.connections.length) return false;
         this.connections.splice(index, 1);
-        this.writeFileSync();
+        this.saveDataToFile();
         return true;
     }
 
@@ -136,7 +136,6 @@ class SessionsManager{
         if(index < 0 || index >= this.connections.length) return -1;
         return this.connections[index];
     }
-
 
     // Error Expired Session
     getExpiredError(){
@@ -148,7 +147,10 @@ class SessionsManager{
         return {"error" : "Your Account is not valid!"};
     }
 
-    getField(field){
+    // getField at session index
+    getField(index, field){
+        if(index < 0 || index >= this.connections.length) return -1;
+        var objData = this.connections[index];
         var value = objData[`${field}`];
         if(value == undefined){
             return -1;
@@ -156,9 +158,20 @@ class SessionsManager{
         return value;
     }
     
-    setField(field, value){
+    // set value for field at session index
+    setField(index, field, value){
+        if(index < 0 || index >= this.connections.length) return -1;
+        var objData = this.connections[index];
         objData[`${field}`] = value;
-        writeData();
+        this.saveDataToFile();
+    }
+
+    // update field last_access at session index
+    updateNewLastAccessAt(index){
+        if(index < 0 || index >= this.connections.length) return -1;
+        this.connections[index].last_access = new Date();
+        this.saveDataToFile();
+        return 1;
     }
 }
 

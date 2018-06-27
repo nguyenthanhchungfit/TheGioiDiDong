@@ -22,8 +22,8 @@ function loginFromAnotherServer(req, res, responseHeader, session_manager){
                 console.log('sessionAccount : ', sessionAccount);
                 if(session_manager.isExpiredDate(sessionAccount.last_access, sessionAccount.time_out)){
                     flagLoginAccount = true;
-                    console.log("expired");
                 }else{
+                    session_manager.updateNewLastAccessAt(indexSession);
                     res.end(JSON.stringify({"sessionID" : sessionAccount.sessionID}));  
                 }
             }else{
@@ -61,13 +61,20 @@ function loginUser(req, res, responseHeader, session_manager){
                 console.log('sessionAccount : ', sessionAccount);
                 // session hết hạn
                 if(session_manager.isExpiredDate(sessionAccount.last_access, sessionAccount.time_out)){
-                    flagLoginAccount = true;
                     console.log(`session: ${sessionID} expired!`);
                     res.end(JSON.stringify(session_manager.getExpiredError()));
-                    // sesion còn hạn
+                // sesion còn hạn
                 }else{
-                    // 
-                    res.end(JSON.stringify({"DATA SERVICE: " : "OK"}));  
+                    session_manager.updateNewLastAccessAt(indexSession);
+                    var username = dataRequest.username;
+                    var password = dataRequest.password;         
+                    var account = dataAccount.isExistedAccount(username, password);
+                    if(account == -1){
+                        res.end(JSON.stringify(session_manager.getLoginError())); 
+                    }else{           
+                        var user = {username : account.username, type : account.type}; 
+                        res.end(JSON.stringify(user));                   
+                    }                    
                 }
             }else{
                 res.end(JSON.stringify(session_manager.getLoginError())); 

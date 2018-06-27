@@ -39,9 +39,13 @@ function printDataAccountCache(){
 }
 
 function isExistedAccount(username, password){
+    if(!username || !password) return -1;
     var length = dataAccountCache.length;
     for(var i = 0; i< length; i++){
-        console.log(dataAccountCache[i].username);
+        var account = dataAccountCache[i];
+        if(account.username == username && account.password == password){
+            return account;
+        }
     }
     return -1;
 }
