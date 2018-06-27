@@ -72,7 +72,7 @@
 				<div class="pull-right">
 					<ul class="header-btns">
 						<!-- Account -->
-						<li class="header-account dropdown default-dropdown">
+						<li class="header-account dropdown default-dropdown" style="display:none;">
 							<div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
 								<div class="header-btns-icon">
 									<i class="fa fa-user-o"></i>
@@ -109,6 +109,40 @@
 										<i class="fa fa-user-plus"></i> Create An Account</a>
 								</li>
 							</ul>
+						</li>
+						<!-- /Account -->
+
+						<!-- Account -->
+						<li class="header-account dropdown default-dropdown">
+							<div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
+								<div class="header-btns-icon">
+									<i class="fas fa-sign-in-alt"></i>
+								</div>
+								<strong class="text-uppercase">Login
+									<i class="fa fa-caret-down"></i>
+								</strong>
+							</div>
+							  <ul id="login-dp" class="dropdown-menu">
+								  <li>
+									   <div class="row">
+											  <div class="col-md-12">
+												   <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+														  <div class="form-group">
+															   <label class="sr-only" for="account">Account</label>
+															   <input type="text" class="form-control" name="account" id="account" placeholder="Account" required>
+														  </div>
+														  <div class="form-group">
+															   <label class="sr-only" for="password">Password</label>
+															   <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+														  </div>
+														  <div class="form-group">
+															   <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+														  </div>
+												   </form>
+											  </div>
+									   </div>
+								  </li>
+							  </ul>
 						</li>
 						<!-- /Account -->
 
@@ -198,16 +232,16 @@
 						<i class="fa fa-bars"></i>
 					</span>
 					<ul class="menu-list">
-						<li>
+						<li class="cursor_point">
 							<a id="home_button">Home</a>
 						</li>
-						<li>
+						<li class="cursor_point">
 							<a id="mobile_button">Mobile</a>
 						</li>
-						<li>
+						<li class="cursor_point">
 							<a id="tablet_button">Tablet</a>
 						</li>
-						<li>
+						<li class="cursor_point">
 							<a id="laptop_button">Laptop </a>
 						</li>
 					</ul>
