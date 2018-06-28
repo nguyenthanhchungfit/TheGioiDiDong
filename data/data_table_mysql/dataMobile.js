@@ -5,7 +5,7 @@ const q = require("q");
 var connection = db.getConnection();
 
 function getAllMobile(){
-    var sql = `SELECT DISTINCT dt.ma_dien_thoai, dt.ten_dien_thoai, dt.gia, dt.so_luong_ton ,h.ma_hinh from dien_thoai as dt 
+    var sql = `SELECT DISTINCT dt.ma_dien_thoai, dt.ten_dien_thoai, dt.gia,dt.duoc_ban, dt.so_luong_ton ,h.ma_hinh from dien_thoai as dt 
     JOIN hinh as h
     ON dt.ma_thiet_bi = h.ma_thiet_bi
     GROUP BY dt.ma_dien_thoai;`;

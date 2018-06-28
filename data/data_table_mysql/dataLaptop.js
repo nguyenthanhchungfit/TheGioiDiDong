@@ -5,7 +5,7 @@ const q = require("q");
 var connection = db.getConnection();
 
 function getAllLaptop(){
-    var sql = `SELECT DISTINCT lt.ma_laptop, lt.ten_laptop, lt.gia, lt.so_luong_ton ,h.ma_hinh from laptop as lt 
+    var sql = `SELECT DISTINCT lt.ma_laptop, lt.ten_laptop, lt.gia,lt.duoc_ban, lt.so_luong_ton ,h.ma_hinh from laptop as lt 
     JOIN hinh as h
     ON lt.ma_thiet_bi = h.ma_thiet_bi 
     GROUP BY lt.ma_laptop`;
@@ -23,6 +23,7 @@ function getAllLaptopForHome(){
 
 function updateLaptop(primaryAttribute,editAttribute,primaryVal,editVal){
     var sql= "UPDATE laptop SET "+editAttribute+ "='"+editVal+  "' WHERE "+primaryAttribute+" ='"+primaryVal+"'";
+    console.log(sql);
     return common_handle_data.updateInfo(sql);
 }
 module.exports = {

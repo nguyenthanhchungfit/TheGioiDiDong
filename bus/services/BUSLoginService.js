@@ -119,8 +119,62 @@ function loginUser(req, res, responseHeader, session_client_manager){
     });
 }
 
+// Logout 
+function logout(req, res, responseHeader, session_client_manager){
+    var data = '';
+    req.on('data', function (chunk) {
+        data += chunk;
+    });
+    req.on('end', function(){
+        var session_client = req.headers.session_user;
+        if(session_client == undefined || session_client == -1){
+            res.writeHead(200, responseHeader);
+            res.end(JSON.stringify({success : "OK"}));
+        }else{
+            indexSession = session_client_manager.isExistedKey(session_client);
+            if(indexSession != -1){
+                session_client_manager.removeSession(indexSession);
+            }
+            res.writeHead(200, responseHeader);
+            res.end(JSON.stringify({success : "OK"}));
+        }
+       
+    })
+}
+
+// Check conenction
+function getConnection(req, res, responseHeader, session_client_manager){
+    var data = '';
+    req.on('data', function (chunk) {
+        data += chunk;
+    });
+    req.on('end', function(){
+        res.writeHead(200, responseHeader);
+        var session_client = req.headers.session_user;
+        if(session_client == undefined || session_client == -1){   
+            res.end(JSON.stringify({error : ""}));
+        }else{
+            indexSession = session_client_manager.isExistedKey(session_client);
+            if(indexSession == -1){   
+                res.end(JSON.stringify(session_client_manager.getExpiredError()));
+            }else{
+                var session = session_client_manager.getSesionAt(indexSession);
+                if(!session_client_manager.isExpiredDate(session.last_access, session.timeout)){
+                    session_client_manager.updateNewLastAccessAt(indexSession);
+                    var objResponse = {sessionID : session.sessionID, username : session.username, type: session.type};
+                    res.end(JSON.stringify(objResponse));
+                }else{
+                    res.end(JSON.stringify(session_client_manager.getExpiredError()));
+                }
+            }
+        }
+       
+    })
+}
 
 module.exports = {
     loginServer : loginServer,
-    loginUser : loginUser
+    loginUser : loginUser,
+    logout : logout,
+    getConnection : getConnection
 }

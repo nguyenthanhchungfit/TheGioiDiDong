@@ -1,45 +1,47 @@
 var host = "http://localhost:8002";
 
 $(document).ready(function(){
-    loadDanhSachTablet();
+    $("#idTbody").empty();    
+    loadDanhSachPhone();
 })
-
-$("#dataTable").on('click', 'button', function(e){
-     $check = $(this).parent().prev().children().children();
-     var isSelling=$check.attr("checked");
-     var duoc_ban=false;
-     if(isSelling=="checked"){
-         duoc_ban=true;
-     }
-     $soluong=$check.parent().parent().prev().children();
-     var soluong=$soluong.attr("value");
-     alert(soluong);
-     $gia=$soluong.parent().prev().children();
-     var gia=$gia.attr("value");
-     $ma=$(this).next();
-     var ma=$ma.attr("value");
-     update('TL000',123,13,false);
-})
-
-$(".update").on('click', function(e){
-    alert("hello");
-    e.preventDefault(e);
-   update($("#proId").val(),$("#gia").val(),$("#soluong").val(),$("#isSelling").val());
-   console.log($("#proId").val());
+$("#dataTable").on('change', 'input', function(){
+        var duoc_ban=$(this).attr("checked");
+        if(duoc_ban=="checked")
+        {
+            duoc_ban=true;
+        }
+        else{
+           duoc_ban=false;
+        }
+        duoc_ban=!duoc_ban;
+    $("#dataTable").on('click', 'button', function(e){
+        $check = $(this).parent().prev().children().children();
+        $soluong=$check.parent().parent().prev().children();
+        var soluong=$soluong.val();
+        $gia=$soluong.parent().prev().children();
+        var gia=$gia.val();
+        $ma=$(this).next();
+        var ma=$ma.val();
+        update(ma,gia,soluong,duoc_ban);
+   })
 });
+
 
 $("#mobile").on('click', function(e){
     e.preventDefault();
+    $("#idTbody").empty();
     loadDanhSachPhone();
 });
 
 $("#laptop").on('click', function(e){
     e.preventDefault();
+    $("#idTbody").empty();    
     loadDanhSachLaptop();
 });
 
 $("#tablet").on('click', function(e){
     e.preventDefault();
+    $("#idTbody").empty();    
     loadDanhSachTablet();
 });
 
@@ -56,8 +58,7 @@ function Tao_The_Hien_Mobile(objData){
       var length = objData.length;
       var Table = document.getElementById("dataTable");
       
-      var bodyTable=document.createElement("tbody");
-          Table.appendChild(bodyTable);
+      var bodyTable=Table.getElementsByTagName("tbody")[0];
 
       for(var i = 0; i < length; i++){
           var phone = objData[i];
@@ -66,7 +67,6 @@ function Tao_The_Hien_Mobile(objData){
           var gia = phone.gia;
           var ma_hinh = phone.ma_hinh;
           var so_luong_ton=phone.so_luong_ton;
-          var isSelling=phone.duoc_ban==true?"checked":"";
           var duoc_ban=phone.duoc_ban;
 
           console.log("--------------------------------");
@@ -145,8 +145,7 @@ function Tao_The_Hien_Laptop(objData){
       var length = objData.length;
       var Table = document.getElementById("dataTable");
       
-      var bodyTable=document.createElement("tbody");
-          Table.appendChild(bodyTable);
+      var bodyTable=Table.getElementsByTagName("tbody")[0];
 
       for(var i = 0; i < length; i++){
           var laptop = objData[i];
@@ -155,7 +154,6 @@ function Tao_The_Hien_Laptop(objData){
           var gia = laptop.gia;
           var ma_hinh = laptop.ma_hinh;
           var so_luong_ton=laptop.so_luong_ton;
-          var isSelling=laptop.duoc_ban==true?"checked":"";
           var duoc_ban=laptop.duoc_ban;
 
           console.log("--------------------------------");
@@ -234,8 +232,7 @@ function Tao_The_Hien_Tablet(objData){
       var length = objData.length;
       var Table = document.getElementById("dataTable");
       
-      var bodyTable=document.createElement("tbody");
-          Table.appendChild(bodyTable);
+      var bodyTable=Table.getElementsByTagName("tbody")[0];
 
       for(var i = 0; i < length; i++){
           var tablet = objData[i];
@@ -246,6 +243,7 @@ function Tao_The_Hien_Tablet(objData){
           var so_luong_ton=tablet.so_luong_ton;
           var duoc_ban=tablet.duoc_ban;
           
+          console.log(tablet);
           // 1.Tạo tr Product
           var trProduct = document.createElement("tr");
           trProduct.id = ma_tablet;
