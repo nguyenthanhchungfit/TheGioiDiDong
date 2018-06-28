@@ -733,6 +733,7 @@ function Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(type) {
             $('#account_name').attr("href", "/admin.html");
         }
     } else {
+        $("#so_luong_sach").text("0");
         $("#login_button_li").css("display", "");
         $("#login_account_li").css("display", "none");
         $("#logout_account_li").css("display", "none");
