@@ -10,7 +10,15 @@ function getAllMobileForHome(req, res, responseHeader){
     });
 }
 
+function getAllMobileForAD(req, res, responseHeader){
+    dataMobile.getAllMobile().then(function(result){
+        data = JSON.stringify(result);
+        res.writeHeader(200, responseHeader);
+        res.end(data);
+    });
+}
 
 module.exports = {
-    getAllMobileForHome : getAllMobileForHome
+    getAllMobileForHome : getAllMobileForHome,
+    getAllMobileForAD : getAllMobileForAD
 }

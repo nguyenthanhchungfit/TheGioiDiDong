@@ -5,8 +5,11 @@ const q = require("q");
 var connection = db.getConnection();
 
 function getAllTablet(){
-    var sql = `SELECT * FROM tablet`;
-   return common_handle_data.getAllTablet(sql);
+    var sql = `SELECT DISTINCT tl.ma_tablet, tl.ten_tablet, tl.gia, tl.so_luong_ton ,h.ma_hinh from tablet as tl 
+    JOIN hinh as h
+    ON tl.ma_thiet_bi = h.ma_thiet_bi 
+    GROUP BY tl.ma_tablet`;
+   return common_handle_data.getAllInfo(sql);
 }
 
 function getAllTabletForHome(){

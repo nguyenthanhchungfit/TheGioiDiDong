@@ -10,7 +10,16 @@ function getAllTabletForHome(req, res, responseHeader){
     });
 }
 
+function getAllTabletForAD(req, res, responseHeader){
+    dataTablet.getAllTablet().then(function(result){
+        data = JSON.stringify(result);
+        res.writeHeader(200, responseHeader);
+        res.end(data);
+    });
+}
+
 
 module.exports = {
-    getAllTabletForHome : getAllTabletForHome
+    getAllTabletForHome : getAllTabletForHome,
+    getAllTabletForAD : getAllTabletForAD
 }

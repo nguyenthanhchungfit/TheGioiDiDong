@@ -13,7 +13,7 @@ app.createServer((req, res) =>{
     console.log(`${req.method} ${req.url}`);
 
     // Xử lý nếu req chỉ '/' thì load nội dung file index.html
-    var req_url = (req.url == '/') ? '/index.html' : req.url;
+    var req_url = (req.url == '/') ? '/admin.html' : req.url;
 
     // Lưu ý: sau khi res nội dung của index.html về client thì ở file HTML sẽ có những
     //       request yêu cầu load nội dung của Resource (cụ thể ở đây là file js/script.js và img/favicon.ico)
@@ -38,6 +38,7 @@ app.createServer((req, res) =>{
                         '.ttf' : 'font/opentype',
                         '.woff' : 'font/opentype',
                         '.woff2' : 'font/opentype',
+                        '.map' : 'text/css'
                         }[ req.url.substr(file_extension) ];
 
     // Đọc file theo req gửi từ Client lên (lưu ý, phần này sẽ được call nhiều lần để đọc các file Resource)

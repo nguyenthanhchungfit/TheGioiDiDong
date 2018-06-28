@@ -5,7 +5,10 @@ const q = require("q");
 var connection = db.getConnection();
 
 function getAllMobile(){
-    var sql = `SELECT * FROM dien_thoai`;
+    var sql = `SELECT DISTINCT dt.ma_dien_thoai, dt.ten_dien_thoai, dt.gia, dt.so_luong_ton ,h.ma_hinh from dien_thoai as dt 
+    JOIN hinh as h
+    ON dt.ma_thiet_bi = h.ma_thiet_bi
+    GROUP BY dt.ma_dien_thoai;`;
     return common_handle_data.getAllInfo(sql);
 }
 
@@ -18,7 +21,8 @@ function getAllMobileForHome(){
 }
 
 function updateMobile(primaryAttribute,editAttribute,primaryVal,editVal){
-    var sql= "UPDATE mobile SET "+editAttribute+ "='"+editVal+  "' WHERE "+primaryAttribute+" ='"+primaryVal+"'";
+    var sql= "UPDATE dien_thoai SET "+editAttribute+ "='"+editVal+  "' WHERE "+primaryAttribute+" ='"+primaryVal+"'";
+    console.log(sql);
     return common_handle_data.updateInfo(sql);
 } 
 

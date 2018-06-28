@@ -24,6 +24,7 @@ const PhoneService = require("./services/DATAPhoneService");
 const LoginService = require("./services/DATALoginService");
 const LaptopService = require("./services/DATALaptopService");
 const TabletService = require("./services/DATATabletService");
+const update = require("./services/DATAUpdateService");
 
 const dataLaptop = require(duong_dan_module_DL_mysql+"dataLaptop");
 const dataHinh = require(duong_dan_module_DL_mysql+"dataHinh");
@@ -57,7 +58,7 @@ app.createServer((req, res) => {
    var Chuoi_Tham_so=req.url.slice(req.url.indexOf('?')+1);
    var Tham_so_json = query.parse(Chuoi_Tham_so);
    console.log(req.url);
-   
+   var data="";
     switch(req.method) {
         //Lấy dữ liệu
         case 'GET':
@@ -95,7 +96,8 @@ app.createServer((req, res) => {
                 case '/getAllAccount':
                 dataAccount.getAllAccount().then(function(result){
                     data=JSON.stringify(result);
-                    console.log(data);
+                    res.writeHeader(200,responseHeader);
+                    res.end(data);
                 })
                 break;
                 case '/getAllHinh':
@@ -148,6 +150,12 @@ app.createServer((req, res) => {
                editVal=body.editVal;
             });
             switch(req.url){
+                case '/update':
+                {
+                    console.log("dataservice updatepro");
+                    update.update(req, res, responseHeader, session_manager);
+                }
+                break;
                 case '/loginUser':
                 {
                     LoginService.loginUser(req, res, responseHeader, session_manager);
@@ -169,7 +177,19 @@ app.createServer((req, res) => {
                 case '/getAllTabletForHome' :
                     TabletService.getAllTabletForHome(req, res, responseHeader);
                 break;
+                
+                case '/getAllMobileForAD' :
+                    PhoneService.getAllMobileForAD(req, res, responseHeader);
+                break;
 
+                case '/getAllLaptopForAD' :
+                    LaptopService.getAllLaptopForAD(req, res, responseHeader);
+                break;
+
+                case '/getAllTabletForAD' :
+                    console.log("tablet..............");
+                    TabletService.getAllTabletForAD(req, res, responseHeader);
+                break;
                  // Thứ tự truyền para "primaryAttribute,editAttribute,primaryVal,editVal"
                 case '/updateLaptop':
                 dataLaptop.updateLaptop(primaryAttribute,editAttribute,primaryVal,editVal).then(function(result){
@@ -232,6 +252,7 @@ app.createServer((req, res) => {
         case 'DELETE':
             break;
     }
+    
 }).listen(port, (err) => {
     if(err != null)
         console.log('==> Error: ' + err);
