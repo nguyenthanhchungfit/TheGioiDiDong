@@ -94,7 +94,7 @@ $("#danh_sach_sp").on('click', 'button', function (e) {
 
 })
 
-$("#danh_sach_don_hang").on('change', 'input', function(e){
+$("#danh_sach_don_hang").on('change', 'input', function (e) {
     var $don_gia = $(this).parent().next();
     var $thanh_tien = $don_gia.next();
 
@@ -109,8 +109,13 @@ $("#danh_sach_don_hang").on('change', 'input', function(e){
     $("#tong_tien_val").text(tong_tien);
 })
 
-$("#danh_sach_don_hang").on('click', 'button#btn_tien_hanh_thanh_toan' ,function(){
-    
+$("#danh_sach_don_hang").on('click', 'button#btn_tien_hanh_thanh_toan', function () {
+
+    $("#thong_tin_thanh_toan").html(Tao_The_hien_Nhap_Thong_tin_Thanh_Toan());
+})
+
+$("#danh_sach_don_hang").on('click', 'button#btn_xac_nhan_thanh_toan', function () {
+    LuuThongTinDonHang();
 })
 
 // -----------------------------Tạo giao diện
@@ -552,7 +557,7 @@ function Tao_The_hien_Danh_sach_Don_hang() {
             divRowContent.appendChild(divRowSLM);
             divRowContent.appendChild(divRowDonGia);
             divRowContent.appendChild(divRowThanhTien);
-            
+
             // 1 Add
             divContainer.appendChild(divRowContent);
         }
@@ -563,7 +568,7 @@ function Tao_The_hien_Danh_sach_Don_hang() {
         // 1.1
         var divColEmpty = document.createElement("div");
         divColEmpty.className = "col-md-6";
-        
+
         // 1.2
         var divColButtonTT = document.createElement("div");
         divColButtonTT.className = "col-md-4";
@@ -600,6 +605,116 @@ function Tao_The_hien_Danh_sach_Don_hang() {
 
 }
 
+function Tao_The_hien_Nhap_Thong_tin_Thanh_Toan() {
+    var tong_tien = $("#tong_tien_val").text();
+    if (tong_tien == 0) {
+        alert("Hóa đơn trống");
+        return "";
+    } else {
+        var divContainer = document.createElement("div");
+        divContainer.className = "container-fluid";
+
+        //----------------------------------------------------
+
+        var divRowNguoiMua = document.createElement("div");
+        divRowNguoiMua.className = "row";
+
+        var divColLabelNguoiMua = document.createElement("div");
+        divColLabelNguoiMua.setAttribute("class", "col-md-2 title_don_hang");
+        divColLabelNguoiMua.innerText = "Họ tên khách:"
+
+        var divColValueNguoiMua = document.createElement("div");
+        divColValueNguoiMua.className = "col-md-5";
+
+        var inputColNguoiMua = document.createElement("input");
+        inputColNguoiMua.setAttribute("type", "text");
+        inputColNguoiMua.setAttribute("id", "ten_nguoi_mua");
+        inputColNguoiMua.setAttribute("name", "ten_nguoi_mua");
+        inputColNguoiMua.setAttribute("placeholder", "Nhập tên");
+
+        divColValueNguoiMua.appendChild(inputColNguoiMua);
+
+        divRowNguoiMua.appendChild(divColLabelNguoiMua);
+        divRowNguoiMua.appendChild(divColValueNguoiMua);
+
+        // ---------------------------------------------------
+
+        var divRowDienThoai = document.createElement("div");
+        divRowDienThoai.className = "row";
+
+        var divColLabelDienThoai = document.createElement("div");
+        divColLabelDienThoai.setAttribute("class", "col-md-2 title_don_hang");
+        divColLabelDienThoai.innerHTML = "Số điện thoại"
+
+        var divColValueDienThoai = document.createElement("div");
+        divColValueDienThoai.className = "col-md-5";
+
+        var inputColDienThoai = document.createElement("input");
+        inputColDienThoai.setAttribute("type", "text");
+        inputColDienThoai.setAttribute("id", "dien_thoai");
+        inputColDienThoai.setAttribute("name", "dien_thoai");
+        inputColDienThoai.setAttribute("placeholder", "Nhập số điện thoại");
+
+        divColValueDienThoai.appendChild(inputColDienThoai);
+
+        divRowDienThoai.appendChild(divColLabelDienThoai);
+        divRowDienThoai.appendChild(divColValueDienThoai);
+
+        // ---------------------------------------------------
+
+        var divRowDiaChi = document.createElement("div");
+        divRowDiaChi.className = "row";
+
+        var divColLabelDiaChi = document.createElement("div");
+        divColLabelDiaChi.setAttribute("class", "col-md-2 title_don_hang");
+        divColLabelDiaChi.innerText = "Địa chỉ:"
+
+        var divColValueDiaChi = document.createElement("div");
+        divColValueDiaChi.className = "col-md-5";
+
+        var inputColDiaChi = document.createElement("input");
+        inputColDiaChi.setAttribute("type", "text");
+        inputColDiaChi.setAttribute("id", "dia_chi");
+        inputColDiaChi.setAttribute("name", "dia_chi");
+        inputColDiaChi.setAttribute("placeholder", "Nhập địa chỉ");
+
+        divColValueDiaChi.appendChild(inputColDiaChi);
+
+        divRowDiaChi.appendChild(divColLabelDiaChi);
+        divRowDiaChi.appendChild(divColValueDiaChi);
+
+        // ---------------------------------------------------
+        divContainer.appendChild(divRowNguoiMua);
+        divContainer.appendChild(divRowDienThoai);
+        divContainer.appendChild(divRowDiaChi);
+
+
+        var divButtonContainer = document.createElement("div");
+        divButtonContainer.className = "row";
+
+        var divButtonEmpty = document.createElement("div");
+        divButtonEmpty.className = "col-md-6";
+
+
+        var divButtonContent = document.createElement("div");
+        divButtonContent.className = "col-md-3";
+        var buttonXacNhanThanhToan = document.createElement("button");
+        buttonXacNhanThanhToan.classList = "btn btn-success text-center title_don_hang";
+        buttonXacNhanThanhToan.innerText = "Xác nhận thanh toán";
+        buttonXacNhanThanhToan.setAttribute("id", "btn_xac_nhan_thanh_toan");
+        buttonXacNhanThanhToan.setAttribute("type", "button");
+
+        divButtonContent.appendChild(buttonXacNhanThanhToan);
+        divButtonContainer.appendChild(divButtonEmpty);
+        divButtonContainer.appendChild(divButtonContent);
+
+        divContainer.appendChild(divButtonContainer);
+
+        return divContainer;
+    }
+
+}
+
 function Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(type) {
     if (type == 1 || type == 2 || type == 3) {
         $("#login_button_li").css("display", "none");
@@ -623,8 +738,6 @@ function Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(type) {
         $("#mycart").css("display", "none");
     }
 }
-
-
 
 
 
@@ -720,14 +833,14 @@ function updateSoLuongThietBi() {
     $("#so_luong_sach").text(orders.length);
 }
 
-function getListHoaDon(){
-    
+function getListHoaDon() {
+
     var $divItem = $("#danh_sach_don_hang").children().children().first().next().next();
     var products = [];
 
-    while(1){
+    while (1) {
         var id = $divItem.attr("id");
-        if(id == undefined){
+        if (id == undefined) {
             break;
         }
         var $childI = $divItem.children().first();
@@ -741,15 +854,17 @@ function getListHoaDon(){
         product.slt = slt;
         product.slm = slm;
         product.don_gia = don_gia;
-        products.push(product);
+        if (slm != 0) {
+            products.push(product);
+        }
         $divItem = $divItem.next();
     }
     return products;
 }
 
-function getTongTien(products){
+function getTongTien(products) {
     var tong_tien = 0;
-    for(var i =0; i<products.length; i++){
+    for (var i = 0; i < products.length; i++) {
         tong_tien += (products[i].slm * products[i].don_gia);
     }
     return tong_tien;
@@ -759,6 +874,48 @@ function getTongTien(products){
 
 
 // Connection
+
+function LuuThongTinDonHang() {
+    var currentSession = localStorage.getItem("sessionID");
+    var ten_nguoi_mua = $("#ten_nguoi_mua").val();
+    var so_dien_thoai = $("#dien_thoai").val();
+    var dia_chi = $("#dia_chi").val();
+
+    if (ten_nguoi_mua == "" || so_dien_thoai == "" || dia_chi == "") {
+        alert("Vui lòng nhập đầy đủ thông tin!");
+        return;
+    }
+
+    var tong_tien = $("#tong_tien_val").text();
+    if (tong_tien == 0) {
+        alert("Đơn hàng rỗng!");
+        return;
+    }
+
+    var Xu_ly_HTTP = new XMLHttpRequest();
+    var linkRequest = host + "/luuThongTinDonHang";
+    Xu_ly_HTTP.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var objData = JSON.parse(this.responseText);
+            alert(objData);
+            console.log(objData);
+        }
+    };
+
+    var don_hang = {};
+    var products = getListHoaDon();
+    don_hang.ten_nguoi_mua = ten_nguoi_mua;
+    don_hang.dia_chi = dia_chi;
+    don_hang.so_dien_thoai = so_dien_thoai;
+    don_hang.tong_tien = tong_tien;
+    don_hang.products = products;
+
+    Xu_ly_HTTP.open("POST", linkRequest, true);
+    Xu_ly_HTTP.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    Xu_ly_HTTP.setRequestHeader("session_user", currentSession);
+    Xu_ly_HTTP.send(JSON.stringify(don_hang));
+
+}
 
 function loginUser(username, password) {
 

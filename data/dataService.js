@@ -24,6 +24,7 @@ const PhoneService = require("./services/DATAPhoneService");
 const LoginService = require("./services/DATALoginService");
 const LaptopService = require("./services/DATALaptopService");
 const TabletService = require("./services/DATATabletService");
+const OrderService = require("./services/DATAOrderService");
 const update = require("./services/DATAUpdateService");
 
 const dataLaptop = require(duong_dan_module_DL_mysql+"dataLaptop");
@@ -150,6 +151,10 @@ app.createServer((req, res) => {
                editVal=body.editVal;
             });
             switch(req.url){
+                case '/luuTruDonHang':{
+                    OrderService.LuuTruDonHang(req, res, responseHeader, session_manager);
+                    break;
+                }
                 case '/update':
                 {
                     console.log("dataservice updatepro");
