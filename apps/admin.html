@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>SB Admin - Start Bootstrap Template</title>
+  <title>ADMIN</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -63,13 +63,14 @@
       </ul>
       <ul class="navbar-nav ml-auto">
        <!--admin-->
-        <li >
-              <i class="fa fa-user-secret" style="font-size:48px;color:blue">  Admin</i>
+        <li id="login_account_li">
+            <i class="fa fa-user-secret" style="font-size:48px;color:blue"></i>
+             <a href="#" id="account_name">Quản Lí</a> 
         </li>
         
-        <li class="nav-item">
+        <li class="nav-item" id="logout_account_li">
           <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-            <i id="logout_account_li" class="fa fa-fw fa-sign-out"></i>Logout</a>
+            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
         </li>
       </ul>
     </div>
@@ -154,7 +155,8 @@
     <script src="js/sb-admin.min.js"></script>
     <!-- Custom scripts for this page-->
     <script src="js/sb-admin-datatables.min.js"></script>
-    <script src="js/sb-admin-datatables.js"></script>
+    <!--<script src="js/sb-admin-datatables.js"></script>-->
+    <script src="js/script.js"></script>
   </div>
 </body>
 

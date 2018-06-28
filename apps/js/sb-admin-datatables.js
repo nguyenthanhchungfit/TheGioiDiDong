@@ -8,12 +8,11 @@ $("#dataTable").on('change', 'input', function(){
         var duoc_ban=$(this).attr("checked");
         if(duoc_ban=="checked")
         {
-            duoc_ban=true;
+            duoc_ban=0;
         }
         else{
-           duoc_ban=false;
+           duoc_ban=1;
         }
-        duoc_ban=!duoc_ban;
     $("#dataTable").on('click', 'button', function(e){
         $check = $(this).parent().prev().children().children();
         $soluong=$check.parent().parent().prev().children();
