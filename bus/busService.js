@@ -7,6 +7,7 @@ const LaptopService = require('./services/BUSLaptopService');
 const TabletService = require('./services/BUSTabletService');
 const LoginService = require('./services/BUSLoginService');
 const update = require('./services/BUSUpdateService');
+const OrderService = require("./services/BUSOrderService");
 
 
 var session_manager_class = require('./server_connection/session_manager');
@@ -53,6 +54,14 @@ app.createServer((req, res) => {
                 TabletService.getAllTabletForHome(req, res, responseHeader);
             }
             break;
+            case '/logout':{
+                LoginService.logout(req, res, responseHeader, session_client_manager);
+            }
+            break;
+            case '/getConnection':{
+                LoginService.getConnection(req, res, responseHeader, session_client_manager);
+            }
+            break;
 
             case '/getAllMobileForAD':
             {
@@ -70,14 +79,6 @@ app.createServer((req, res) => {
                 TabletService.getAllTabletForAD(req, res, responseHeader);
             }
             break;
-            case '/logout':{
-                LoginService.logout(req, res, responseHeader, session_client_manager);
-            }
-            break;
-            case '/getConnection':{
-                LoginService.getConnection(req, res, responseHeader, session_client_manager);
-            }
-            break;
             default:
             {
                 res.writeHeader(200, {'Content-Type': 'text/plain'});
@@ -87,7 +88,10 @@ app.createServer((req, res) => {
     // POST    
     }else if(methodRequest == "POST"){
         switch(urlRequest){
-           
+           case '/luuThongTinDonHang':{
+                OrderService.LuuThongTinDonHang(req, res, responseHeader, session_client_manager);
+           }
+           break;
             case '/loginUser':
             {
                 LoginService.loginUser(req, res, responseHeader, session_client_manager);
