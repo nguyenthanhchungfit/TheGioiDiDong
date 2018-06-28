@@ -716,6 +716,7 @@ function Tao_The_hien_Nhap_Thong_tin_Thanh_Toan() {
 }
 
 function Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(type) {
+    $("#danh_sach_don_hang").html("");
     if (type == 1 || type == 2 || type == 3) {
         $("#login_button_li").css("display", "none");
         $("#login_account_li").css("display", "");
