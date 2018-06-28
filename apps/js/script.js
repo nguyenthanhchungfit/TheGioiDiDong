@@ -850,6 +850,7 @@ function getListHoaDon() {
         var don_gia = $childI.next().next().next().next().text();
 
         var product = {};
+        product.id = id;
         product.name = name;
         product.slt = slt;
         product.slm = slm;
@@ -897,13 +898,19 @@ function LuuThongTinDonHang() {
     Xu_ly_HTTP.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var objData = JSON.parse(this.responseText);
-            alert(objData);
             console.log(objData);
+            if(objData.success){
+                localStorage.removeItem("orders");
+                alert("Lưu đơn hàng thành công!");
+                $("#danh_sach_don_hang").html("");
+                loadDanhSachPhone();
+            }
+            
         }
     };
 
     var don_hang = {};
-    var products = getListHoaDon();
+    var products = getListHoaDon(); 
     don_hang.ten_nguoi_mua = ten_nguoi_mua;
     don_hang.dia_chi = dia_chi;
     don_hang.so_dien_thoai = so_dien_thoai;
@@ -925,6 +932,7 @@ function loginUser(username, password) {
     var currentSession = localStorage.getItem("sessionID");
     if (currentSession == undefined) {
         currentSession = -1;
+        
     }
     var Xu_ly_HTTP = new XMLHttpRequest();
     var linkRequest = host + "/loginUser";

@@ -55,6 +55,7 @@ function LuuThongTinDonHang(req, res, responseHeader, session_client_manager){
 
                 console.log('data receive', dataRequest);
                 var objDataRequest = JSON.parse(dataRequest);
+                res.writeHead(200, responseHeader);
                 res.end(JSON.stringify(objDataRequest));
             });
         
