@@ -1,0 +1,9 @@
+<Du_lieu>
+    <Danh_sach_Ban_hang>
+        <Ban_hang ngayban="" nguoi_mua="" dia_chi="" dien_thoai="" nguoiban="" tong_tien=""> 
+            <Danh_sach_San_pham>
+                <SanPham ma_san_pham="" so_luong="" don_gia="" thanh_tien=""/>
+            </Danh_sach_San_pham>
+        </Ban_hang>
+    </Danh_sach_Ban_hang>
+</Du_lieu>

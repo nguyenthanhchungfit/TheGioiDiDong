@@ -109,8 +109,8 @@ VALUES ('TDT000', 'DT000_0000.png'),
 -- 28-06-2018
 INSERT INTO account 
   VALUES ("thanhchungKH1", "123456", 1),
-  ("thanhchungKH1", "123456", 1),
-  ("thanhchungKH1", "123456", 2),
-  ("thanhchungKH1", "123456", 2),
-  ("thanhchungKH1", "123456", 3),
-  ("thanhchungKH1", "123456", 3)
+  ("thanhchungKH2", "123456", 1),
+  ("thanhchungNV1", "123456", 2),
+  ("thanhchungNV2", "123456", 2),
+  ("thanhchungQL1", "123456", 3),
+  ("thanhchungQL2", "123456", 3)

@@ -33,8 +33,7 @@ $("#btnLogin").on('click', function () {
         return;
     }
     loginUser(account, password);
-
-
+    $("#password").val("");
 });
 
 $("#logout_account_li").on('click', function () {
@@ -42,12 +41,35 @@ $("#logout_account_li").on('click', function () {
 });
 
 $("#mycart").on('click', function () {
-    alert("my cart click");
+    $("#danh_sach_sp").html("");
+    $("#danh_sach_don_hang").html(Tao_The_hien_Danh_sach_Don_hang());
 })
 
 $("#danh_sach_sp").on('click', 'button', function (e) {
     $parentID = $(this).parent().parent().parent();
+
+    var $so_luong_ton = $(this).parent().prev();
+    var $ten_san_pham = $so_luong_ton.prev().children("a");
+    var $gia_san_pham = $so_luong_ton.prev().prev();
+    var $image = $(this).parent().parent().prev().children("a").children("img");
+
     var id = $parentID.attr("id");
+    var str_so_luong_ton = $so_luong_ton.text();
+    var i_space_SLT = str_so_luong_ton.lastIndexOf(' ');
+    var length_SLT = str_so_luong_ton.length;
+    var so_luong_ton = str_so_luong_ton.substring(i_space_SLT + 1, length_SLT);
+    var ten_san_pham = $ten_san_pham.text();
+    var gia_san_pham = $gia_san_pham.text().split('.').join('');
+    var image = $image.attr("src");
+
+    var product = {
+        id: id,
+        ten_san_pham: ten_san_pham,
+        so_luong_ton: so_luong_ton,
+        gia_san_pham: gia_san_pham,
+        image: image
+    };
+
     var orders = localStorage.getItem("orders");
     if (orders == undefined) {
         orders = [];
@@ -55,21 +77,40 @@ $("#danh_sach_sp").on('click', 'button', function (e) {
         orders = JSON.parse(orders);
     }
 
-    alert(id);
+
     var flag = false;
     for (var i = 0; i < orders.length; i++) {
-        if (id == orders[i]) {
+        if (id == orders[i].id) {
             alert("Sản phẩm đã có trong giỏ hàng!");
             flag = true;
             break;
         }
     }
     if (flag == false) {
-        orders.push(id);
+        orders.push(product);
     }
     $("#so_luong_sach").text(orders.length);
     localStorage.setItem("orders", JSON.stringify(orders));
 
+})
+
+$("#danh_sach_don_hang").on('change', 'input', function(e){
+    var $don_gia = $(this).parent().next();
+    var $thanh_tien = $don_gia.next();
+
+    var so_luong = $(this).val();
+    var don_gia = $don_gia.text();
+    var thanh_tien = so_luong * don_gia;
+
+    $thanh_tien.text(thanh_tien);
+
+    var products = getListHoaDon();
+    var tong_tien = getTongTien(products);
+    $("#tong_tien_val").text(tong_tien);
+})
+
+$("#danh_sach_don_hang").on('click', 'button#btn_tien_hanh_thanh_toan' ,function(){
+    
 })
 
 // -----------------------------Tạo giao diện
@@ -381,6 +422,184 @@ function Tao_The_hien_Tablet(objData) {
     }
 }
 
+function Tao_The_hien_Danh_sach_Don_hang() {
+    var orders = localStorage.getItem("orders");
+    if (orders == undefined) {
+        orders = [];
+    } else {
+        orders = JSON.parse(orders);
+    }
+
+    var length = orders.length;
+    if (length > 0) {
+
+        var divContainer = document.createElement("div");
+        divContainer.className = "container";
+
+        var divTitle = document.createElement("div");
+        divTitle.classList = "row title_thong_tin_don_hang";
+        divTitle.innerText = "Thông Tin Giỏ Hàng";
+
+        divContainer.appendChild(divTitle);
+
+        // header bang
+        // 1.1
+        var divRowTitle = document.createElement("div");
+        divRowTitle.className = "row item item_don_hang title_don_hang";
+        // 1.1.1
+        var divColImage = document.createElement("div");
+        divColImage.className = "col-md-2";
+        // 1.1.2
+        var divColName = document.createElement("div");
+        divColName.className = "col-md-2";
+        divColName.innerText = "Tên";
+
+        // 1.1.3
+        var divColSLT = document.createElement("div");
+        divColSLT.className = "col-md-2";
+        divColSLT.innerText = "Số lượng tồn"
+
+        // 1.1.4
+        var divColSLM = document.createElement("div");
+        divColSLM.className = "col-md-2";
+        divColSLM.innerText = "Số lượng mua";
+
+        // 1.1.5
+        var divColDonGia = document.createElement("div");
+        divColDonGia.className = "col-md-2";
+        divColDonGia.innerText = "Đơn giá"
+
+        // 1.1.6
+        var divColThanhTien = document.createElement("div");
+        divColThanhTien.className = "col-md-2";
+        divColThanhTien.innerText = "Thành tiền";
+
+        // 1.1 Add
+        divRowTitle.appendChild(divColImage);
+        divRowTitle.appendChild(divColName);
+        divRowTitle.appendChild(divColSLT);
+        divRowTitle.appendChild(divColSLM);
+        divRowTitle.appendChild(divColDonGia);
+        divRowTitle.appendChild(divColThanhTien);
+
+        // 1 Add
+        divContainer.appendChild(divRowTitle);
+
+        //------------------- Add content
+
+        var tong_tien = 0;
+
+        for (var i = 0; i < length; i++) {
+            var order = orders[i];
+
+            var id = order.id;
+            var ten_san_pham = order.ten_san_pham;
+            var so_luong_ton = order.so_luong_ton;
+            var image = order.image;
+            var gia_san_pham = order.gia_san_pham;
+            tong_tien += (gia_san_pham - 0);
+
+
+            // header bang
+            // 1.1
+            var divRowContent = document.createElement("div");
+            divRowContent.setAttribute("id", id);
+            divRowContent.className = "row item border item_don_hang border_don_hang content_don_hang";
+            // 1.1.1
+            var divRowImage = document.createElement("div");
+            divRowImage.className = "col-md-2";
+            var imgRowImage = document.createElement("img");
+            imgRowImage.className = "img_thubnail_don_hang";
+            imgRowImage.src = image;
+            divRowImage.appendChild(imgRowImage);
+
+            // 1.1.2
+            var divRowName = document.createElement("div");
+            divRowName.className = "col-md-2";
+            divRowName.innerText = ten_san_pham;
+
+            // 1.1.3
+            var divRowSLT = document.createElement("div");
+            divRowSLT.className = "col-md-2";
+            divRowSLT.innerText = so_luong_ton;
+
+            // 1.1.4
+            var divRowSLM = document.createElement("div");
+            divRowSLM.className = "col-md-2";
+            var inputRowSLM = document.createElement("input");
+            inputRowSLM.setAttribute("onkeydown", "return false;");
+            inputRowSLM.setAttribute("value", "1");
+            inputRowSLM.setAttribute("type", "number");
+            inputRowSLM.setAttribute("name", "SLM");
+            inputRowSLM.setAttribute("min", "0");
+            inputRowSLM.setAttribute("max", `${so_luong_ton}`);
+            divRowSLM.appendChild(inputRowSLM);
+
+            // 1.1.5
+            var divRowDonGia = document.createElement("div");
+            divRowDonGia.className = "col-md-2";
+            divRowDonGia.innerText = gia_san_pham;
+
+            // 1.1.6
+            var divRowThanhTien = document.createElement("div");
+            divRowThanhTien.className = "col-md-2";
+            divRowThanhTien.innerText = gia_san_pham;
+
+            // 1.1 Add
+            divRowContent.appendChild(divRowImage);
+            divRowContent.appendChild(divRowName);
+            divRowContent.appendChild(divRowSLT);
+            divRowContent.appendChild(divRowSLM);
+            divRowContent.appendChild(divRowDonGia);
+            divRowContent.appendChild(divRowThanhTien);
+            
+            // 1 Add
+            divContainer.appendChild(divRowContent);
+        }
+
+        var divBTT = document.createElement("div");
+        divBTT.className = "row";
+
+        // 1.1
+        var divColEmpty = document.createElement("div");
+        divColEmpty.className = "col-md-6";
+        
+        // 1.2
+        var divColButtonTT = document.createElement("div");
+        divColButtonTT.className = "col-md-4";
+        var buttonTinhTien = document.createElement("button");
+        buttonTinhTien.setAttribute("type", "button");
+        buttonTinhTien.setAttribute("id", "btn_tien_hanh_thanh_toan");
+        buttonTinhTien.setAttribute("class", "btn btn-success text-center");
+        buttonTinhTien.innerText = "Tiến hành thanh toán";
+        divColButtonTT.appendChild(buttonTinhTien);
+
+        // 1.3
+        var divTongTien = document.createElement("div");
+        divTongTien.className = "col-md-2";
+        var spanTongTien = document.createElement("span");
+        spanTongTien.innerText = "Tổng tiền: ";
+        var spanTongTienVal = document.createElement("span");
+        spanTongTienVal.setAttribute("id", "tong_tien_val");
+        spanTongTienVal.innerText = tong_tien.toLocaleString("vi");
+        divTongTien.appendChild(spanTongTien);
+        divTongTien.appendChild(spanTongTienVal);
+
+        divBTT.appendChild(divColEmpty);
+        divBTT.appendChild(divColButtonTT);
+        divBTT.appendChild(divTongTien);
+
+        divContainer.appendChild(divBTT);
+
+        var idThanhToan = document.createElement("div");
+        idThanhToan.setAttribute("id", "thong_tin_thanh_toan");
+
+        divContainer.appendChild(idThanhToan);
+    }
+    return divContainer;
+
+}
+
 function Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(type) {
     if (type == 1 || type == 2 || type == 3) {
         $("#login_button_li").css("display", "none");
@@ -395,7 +614,7 @@ function Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(type) {
             $("#mycart").css("display", "");
         } else if (type == 3) {
             $('#account_name').text("Quản lý");
-            $('#account_name').attr("href", "/admin");
+            $('#account_name').attr("href", "/admin.html");
         }
     } else {
         $("#login_button_li").css("display", "");
@@ -404,10 +623,13 @@ function Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(type) {
         $("#mycart").css("display", "none");
     }
 }
-// -----------------------------Xử lý nghiệp vụ
 
 
-// -----------------------------Thực hiện đọc/ghi dữ liệu
+
+
+
+// -----------------------------Xử lý nghiệp vụ ------------------------------
+
 function loadDanhSachPhone() {
     var currentSession = localStorage.getItem("sessionID");
     if (currentSession == undefined) {
@@ -498,6 +720,44 @@ function updateSoLuongThietBi() {
     $("#so_luong_sach").text(orders.length);
 }
 
+function getListHoaDon(){
+    
+    var $divItem = $("#danh_sach_don_hang").children().children().first().next().next();
+    var products = [];
+
+    while(1){
+        var id = $divItem.attr("id");
+        if(id == undefined){
+            break;
+        }
+        var $childI = $divItem.children().first();
+        var name = $childI.next().text();
+        var slt = $childI.next().next().text();
+        var slm = $childI.next().next().next().children().val();
+        var don_gia = $childI.next().next().next().next().text();
+
+        var product = {};
+        product.name = name;
+        product.slt = slt;
+        product.slm = slm;
+        product.don_gia = don_gia;
+        products.push(product);
+        $divItem = $divItem.next();
+    }
+    return products;
+}
+
+function getTongTien(products){
+    var tong_tien = 0;
+    for(var i =0; i<products.length; i++){
+        tong_tien += (products[i].slm * products[i].don_gia);
+    }
+    return tong_tien;
+}
+
+// -----------------------------Thực hiện đọc/ghi dữ liệu
+
+
 // Connection
 
 function loginUser(username, password) {
@@ -550,6 +810,7 @@ function logoutUser() {
                     localStorage.removeItem("type");
                     localStorage.removeItem("orders");
                     Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(0);
+                    loadDanhSachPhone();
                 }
             }
         };
@@ -575,21 +836,27 @@ function updateConnectionToServer() {
                 if (this.readyState == 4 && this.status == 200) {
                     var objData = JSON.parse(this.responseText);
                     if (typeof (Storage) !== "undefined") {
-                        if(!objData.error){
+                        if (!objData.error) {
                             localStorage.setItem("sessionID", objData.sessionID);
                             localStorage.setItem("type", objData.type);
                             Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(objData.type);
                             loadDanhSachPhone();
                             updateSoLuongThietBi();
-                        }else{
+                        } else {
                             alert(objData.error);
+                            localStorage.removeItem("sessionID");
+                            localStorage.removeItem("type");
+                            localStorage.removeItem("orders");
                             Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(0);
                             loadDanhSachPhone();
                         }
                     } else {
-                        alert('Sorry! No Web Storage support..');
                         Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(0);
+                        localStorage.removeItem("sessionID");
+                        localStorage.removeItem("type");
+                        localStorage.removeItem("orders");
                         loadDanhSachPhone();
+                        alert('Sorry! No Web Storage support..');
                     }
                 }
             };
@@ -597,7 +864,9 @@ function updateConnectionToServer() {
             Xu_ly_HTTP.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             Xu_ly_HTTP.setRequestHeader("session_user", currentSession);
             Xu_ly_HTTP.send();
-        }else{
+        } else {
+            localStorage.removeItem("sessionID");
+            localStorage.removeItem("type");
             Cap_nhat_The_hien_Theo_Loai_Nguoi_dung(0);
             loadDanhSachPhone();
         }
