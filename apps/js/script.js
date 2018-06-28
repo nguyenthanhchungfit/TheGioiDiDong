@@ -27,8 +27,6 @@ $("#tablet_button").on('click', function (e) {
 $("#btnLogin").on('click', function () {
     var account = $("#account").val();
     var password = $("#password").val();
-    alert(account);
-    alert(password);
     if (account == "" || password == "") {
         $("#loginError").css("color", "red");
         $("#loginError").text("Vui lòng nhập đầy đủ thông tin!");
@@ -547,7 +545,6 @@ function logoutUser() {
         Xu_ly_HTTP.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var objData = JSON.parse(this.responseText);
-                alert(objData);
                 if (objData.success == "OK") {
                     localStorage.removeItem("sessionID");
                     localStorage.removeItem("type");
